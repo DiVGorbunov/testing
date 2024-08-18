@@ -1,6 +1,6 @@
 {
-    "name": "instant_munchkin_main",
-    "short_name": "instant_munchkin_main",
+    "name": "flappy_bird_main",
+    "short_name": "flappy_bird_main",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
