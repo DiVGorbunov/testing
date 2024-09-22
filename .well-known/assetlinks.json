@@ -3,7 +3,6 @@
     "target": {
       "namespace": "android_app",
       "package_name": "com.dhorbunov.instant_munchkin",
-      "sha256_cert_fingerprints":
-      ["DC:1E:77:B1:78:88:C4:2D:66:F3:17:D0:3D:5E:1B:D7:DB:FE:57:FF:6C:77:B6:29:70:BE:51:38:42:8E:A7:56"]
+      "sha256_cert_fingerprints": ["DC:1E:77:B1:78:88:C4:2D:66:F3:17:D0:3D:5E:1B:D7:DB:FE:57:FF:6C:77:B6:29:70:BE:51:38:42:8E:A7:56"]
     }
-  }]
+}]
