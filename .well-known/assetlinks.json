@@ -1,8 +1,11 @@
-[{
+[
+  {
     "relation": ["delegate_permission/common.handle_all_urls"],
     "target": {
       "namespace": "android_app",
       "package_name": "com.instantmunchkin.app",
-      "sha256_cert_fingerprints": ["DC:1E:77:B1:78:88:C4:2D:66:F3:17:D0:3D:5E:1B:D7:DB:FE:57:FF:6C:77:B6:29:70:BE:51:38:42:8E:A7:56"]
+      "sha256_cert_fingerprints":
+        ["41:A2:2D:B6:F8:B6:31:08:F2:98:74:74:33:DB:4B:5E:0E:51:98:F7:5A:0D:1C:4A:33:D7:30:59:B1:61:BB:E4"]
     }
-}]
+  }
+]
