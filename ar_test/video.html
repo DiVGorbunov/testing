@@ -16,12 +16,12 @@
 
 <body style='margin : 0px; overflow: hidden; font-family: Monospace;'>
 
-<video id="video" autoplay loop crossOrigin="anonymous" webkit-playsinline style="display:none">
+<video id="video" autoplay loop crossOrigin="anonymous" webkit-playsinline style="display:none" muted>
 	<source src="video/sintel.ogv" type='video/ogg; codecs="theora, vorbis"'>
 	<source src="video/sintel.mp4" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"'>
 </video>
 
-<video id="video1" autoplay loop crossOrigin="anonymous" webkit-playsinline style="display:none">
+<video id="video1" autoplay loop crossOrigin="anonymous" webkit-playsinline style="display:none" muted>
 	<source src="video/earth.mp4" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"'>
 </video>
 		
@@ -129,9 +129,6 @@ function initialize()
 
 	let video1 = document.getElementById( 'video1' );
 	let texture1 = new THREE.VideoTexture( video1 );
-
-	video.muted = true;
-	video1.muted = true;
 
 	texture.minFilter = THREE.LinearFilter;
 	texture.magFilter = THREE.LinearFilter;
