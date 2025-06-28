@@ -130,6 +130,9 @@ function initialize()
 	let video1 = document.getElementById( 'video1' );
 	let texture1 = new THREE.VideoTexture( video1 );
 
+	video.muted = true;
+	video1.muted = true;
+
 	texture.minFilter = THREE.LinearFilter;
 	texture.magFilter = THREE.LinearFilter;
 	texture.format = THREE.RGBFormat;
@@ -147,8 +150,8 @@ function initialize()
 	
 	mesh2 = new THREE.Mesh( geometry2, material2 );
 	mesh2.rotation.x = -Math.PI/2;
-	mesh2.position.x += 1.0;
-	mesh2.position.z += 1.0;
+	mesh2.position.x += 1.5;
+	//mesh2.position.z += .0;
 	
 	markerRoot1.add( mesh2 );
 }
