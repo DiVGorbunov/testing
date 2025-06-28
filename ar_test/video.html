@@ -20,6 +20,10 @@
 	<source src="video/sintel.ogv" type='video/ogg; codecs="theora, vorbis"'>
 	<source src="video/sintel.mp4" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"'>
 </video>
+
+<video id="video1" autoplay loop crossOrigin="anonymous" webkit-playsinline style="display:none">
+	<source src="video/earth.mp4" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"'>
+</video>
 		
 <!-- 
   Example created by Lee Stemkoski: https://github.com/stemkoski
@@ -34,7 +38,7 @@ var arToolkitSource, arToolkitContext;
 
 var markerRoot1;
 
-var mesh1;
+var mesh1, mesh2;
 
 initialize();
 animate();
@@ -118,9 +122,14 @@ function initialize()
 	})
 
 	let geometry1 = new THREE.PlaneBufferGeometry(1,1, 2,2);
+	let geometry2 = new THREE.PlaneBufferGeometry(2,2, 3,3);
 
 	let video = document.getElementById( 'video' );
 	let texture = new THREE.VideoTexture( video );
+
+	let video1 = document.getElementById( 'video1' );
+	let texture1 = new THREE.VideoTexture( video1 );
+
 	texture.minFilter = THREE.LinearFilter;
 	texture.magFilter = THREE.LinearFilter;
 	texture.format = THREE.RGBFormat;
@@ -130,6 +139,16 @@ function initialize()
 	mesh1.rotation.x = -Math.PI/2;
 	
 	markerRoot1.add( mesh1 );
+
+	texture1.minFilter = THREE.LinearFilter;
+	texture1.magFilter = THREE.LinearFilter;
+	texture1.format = THREE.RGBFormat;
+	let material2 = new THREE.MeshBasicMaterial( { map: texture1 } );
+	
+	mesh2 = new THREE.Mesh( geometry2, material2 );
+	mesh2.rotation.x = -Math.PI/2;
+	
+	markerRoot1.add( mesh2 );
 }
 
 
