@@ -129,7 +129,7 @@ function initialize()
 	let video1 = document.getElementById( 'video1' );
 	let texture1 = new THREE.VideoTexture( video1 );
 
-	texture.minFilter = THREE.LinearFilter;
+	texture.minFilter = THREE.LinearMipmapLinearFilter;
 	texture.magFilter = THREE.LinearFilter;
 	texture.format = THREE.RGBFormat;
 	let material1 = new THREE.MeshBasicMaterial( { map: texture } );
@@ -139,7 +139,7 @@ function initialize()
 	
 	markerRoot1.add( mesh1 );
 
-	texture1.minFilter = THREE.LinearFilter;
+	texture1.minFilter = THREE.LinearMipmapLinearFilter;
 	texture1.magFilter = THREE.LinearFilter;
 	texture1.format = THREE.RGBFormat;
 	let material2 = new THREE.MeshBasicMaterial( { map: texture1 } );
