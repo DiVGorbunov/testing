@@ -23,6 +23,10 @@
 <video id="video1" autoplay loop crossOrigin="anonymous" webkit-playsinline style="display:none">
 	<source src="video/video2.mp4" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"'>
 </video>
+
+<video id="video2" autoplay loop crossOrigin="anonymous" webkit-playsinline style="display:none">
+	<source src="video/video3.mp4" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"'>
+</video>
 		
 <!-- 
   Example created by Lee Stemkoski: https://github.com/stemkoski
@@ -36,8 +40,9 @@ var scene, camera, renderer, clock, deltaTime, totalTime;
 var arToolkitSource, arToolkitContext;
 
 var markerRoot1;
+var markerRoot2;
 
-var mesh1, mesh2;
+var mesh1, mesh2, mesh3;
 
 initialize();
 animate();
@@ -120,14 +125,25 @@ function initialize()
 		type: 'pattern', patternUrl: "data/pattern-heart.patt",
 	})
 
+	markerRoot2 = new THREE.Group();
+	scene.add(markerRoot2);
+	let markerControls2 = new THREEx.ArMarkerControls(arToolkitContext, markerRoot2, {
+		type: 'pattern', patternUrl: "data/hiro.patt",
+	})
+
 	let geometry1 = new THREE.PlaneBufferGeometry(1.246,1.660, 1,1);
 	let geometry2 = new THREE.PlaneBufferGeometry(1.108,0.832, 1,1);
+
+	let geometry3 = new THREE.PlaneBufferGeometry(0.888,1.184, 1,1);
 
 	let video = document.getElementById( 'video' );
 	let texture = new THREE.VideoTexture( video );
 
 	let video1 = document.getElementById( 'video1' );
 	let texture1 = new THREE.VideoTexture( video1 );
+
+	let video2 = document.getElementById( 'video2' );
+	let texture2 = new THREE.VideoTexture( video2 );
 
 	texture.minFilter = THREE.LinearMipmapLinearFilter;
 	texture.magFilter = THREE.LinearFilter;
@@ -151,6 +167,18 @@ function initialize()
 	//mesh2.position.z += .0;
 	
 	markerRoot1.add( mesh2 );
+
+	texture2.minFilter = THREE.LinearMipmapLinearFilter;
+	texture2.magFilter = THREE.LinearFilter;
+	texture2.format = THREE.RGBFormat;
+	let material3 = new THREE.MeshBasicMaterial( { map: texture2 } );
+	
+	mesh3 = new THREE.Mesh( geometry3, material3 );
+	mesh3.rotation.x = -Math.PI/2;
+	//mesh3.position.x += 1.5;
+	//mesh2.position.z += .0;
+
+	markerRoot2.add( mesh3 );
 }
 
 
