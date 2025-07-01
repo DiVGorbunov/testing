@@ -152,10 +152,10 @@ function initialize()
 
 	let geometry1 = new THREE.PlaneBufferGeometry(1.246,1.660, 1,1);
 	let geometry2 = new THREE.PlaneBufferGeometry(1.1,2.0, 1,1);
-	let geometry3 = new THREE.PlaneBufferGeometry(1.250,1.0, 1,1);
-	let geometry4 = new THREE.PlaneBufferGeometry(1.520,1.0, 1,1);
-	let geometry5 = new THREE.PlaneBufferGeometry(0.7,1.0, 1,1);
-	let geometry6 = new THREE.PlaneBufferGeometry(1.350,1.0, 1,1);
+	let geometry3 = new THREE.PlaneBufferGeometry(1.450,1.2, 1,1);
+	let geometry4 = new THREE.PlaneBufferGeometry(1.980,1.2, 1,1);
+	let geometry5 = new THREE.PlaneBufferGeometry(0.95,1.2, 1,1);
+	let geometry6 = new THREE.PlaneBufferGeometry(1.600,1.3, 1,1);
 
 	let video1 = document.getElementById( 'video1' );
 	let texture1 = new THREE.VideoTexture( video1 );
@@ -195,7 +195,7 @@ function initialize()
 	mesh2 = new THREE.Mesh( geometry2, material2 );
 	mesh2.rotation.x = -Math.PI/2;
 	mesh2.position.x += 1.6;
-	mesh2.position.z += 0.7;
+	mesh2.position.z += 2.0;
 	
 	markerRoot1.add( mesh2 );
 
@@ -207,7 +207,7 @@ function initialize()
 	mesh3 = new THREE.Mesh( geometry3, material3 );
 	mesh3.rotation.x = -Math.PI/2;
 	mesh3.position.x += 0.7;
-	mesh2.position.z -= 1.7;
+	mesh3.position.z -= 1.7;
 
 	markerRoot2.add( mesh3 );
 
@@ -231,7 +231,7 @@ function initialize()
 	mesh5 = new THREE.Mesh( geometry5, material5 );
 	mesh5.rotation.x = -Math.PI/2;
 	mesh5.position.x -= 1.45;
-	mesh5.position.z -= 1.0;
+	mesh5.position.z -= 1.4;
 	
 	markerRoot3.add( mesh5 );
 
