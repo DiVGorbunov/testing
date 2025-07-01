@@ -151,9 +151,9 @@ function initialize()
 	})
 
 	let geometry1 = new THREE.PlaneBufferGeometry(1.246,1.660, 1,1);
-	let geometry2 = new THREE.PlaneBufferGeometry(0.888,1.184, 1,1);
+	let geometry2 = new THREE.PlaneBufferGeometry(1.1,2.0, 1,1);
 	let geometry3 = new THREE.PlaneBufferGeometry(1.108,0.832, 1,1);
-	let geometry4 = new THREE.PlaneBufferGeometry(1.246,1.660, 1,1);
+	let geometry4 = new THREE.PlaneBufferGeometry(1.280,0.720, 1,1);
 	let geometry5 = new THREE.PlaneBufferGeometry(0.888,1.184, 1,1);
 	let geometry6 = new THREE.PlaneBufferGeometry(1.108,0.832, 1,1);
 
@@ -182,8 +182,8 @@ function initialize()
 	
 	mesh1 = new THREE.Mesh( geometry1, material1 );
 	mesh1.rotation.x = -Math.PI/2;
-	mesh1.position.x -= 1.42;
-	mesh1.position.z -= 0.3;
+	mesh1.position.x -= 1.45;
+	mesh1.position.z -= 0.9;
 	
 	markerRoot1.add( mesh1 );
 
@@ -194,8 +194,8 @@ function initialize()
 	
 	mesh2 = new THREE.Mesh( geometry2, material2 );
 	mesh2.rotation.x = -Math.PI/2;
-	mesh2.position.x += 1.5;
-	//mesh2.position.z += .0;
+	mesh2.position.x += 1.6;
+	mesh2.position.z += .0;
 	
 	markerRoot1.add( mesh2 );
 
@@ -206,8 +206,8 @@ function initialize()
 	
 	mesh3 = new THREE.Mesh( geometry3, material3 );
 	mesh3.rotation.x = -Math.PI/2;
-	mesh3.position.x -= 1.5;
-	//mesh2.position.z += .0;
+	mesh3.position.x += 0.7;
+	mesh2.position.z -= 1.7;
 
 	markerRoot2.add( mesh3 );
 
@@ -218,8 +218,8 @@ function initialize()
 	
 	mesh4 = new THREE.Mesh( geometry4, material4 );
 	mesh4.rotation.x = -Math.PI/2;
-	mesh4.position.x += 1.5;
-	//mesh2.position.z += .0;
+	mesh4.position.x += -1.5;
+	mesh4.position.z += 1.5;
 
 	markerRoot2.add( mesh4 );
 }
