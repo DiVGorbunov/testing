@@ -150,12 +150,12 @@ function initialize()
 		type: 'pattern', patternUrl: "data/pattern-heart_3.patt",
 	})
 
-	let geometry1 = new THREE.PlaneBufferGeometry(1.246,1.620, 1,1);
-	let geometry2 = new THREE.PlaneBufferGeometry(1.3,2.30, 1,1);
+	let geometry1 = new THREE.PlaneBufferGeometry(1.246,1.610, 1,1);
+	let geometry2 = new THREE.PlaneBufferGeometry(1.35,2.30, 1,1);
 	let geometry3 = new THREE.PlaneBufferGeometry(1.450,1.2, 1,1);
 	let geometry4 = new THREE.PlaneBufferGeometry(2.020,1.2, 1,1);
 	let geometry5 = new THREE.PlaneBufferGeometry(0.95,1.2, 1,1);
-	let geometry6 = new THREE.PlaneBufferGeometry(1.650,1.3, 1,1);
+	let geometry6 = new THREE.PlaneBufferGeometry(1.670,1.3, 1,1);
 
 	let video1 = document.getElementById( 'video1' );
 	let texture1 = new THREE.VideoTexture( video1 );
@@ -206,7 +206,7 @@ function initialize()
 	
 	mesh3 = new THREE.Mesh( geometry3, material3 );
 	mesh3.rotation.x = -Math.PI/2;
-	mesh3.position.x += 1.2;
+	mesh3.position.x += 1.15;
 	mesh3.position.z -= 1.5;
 
 	markerRoot2.add( mesh3 );
@@ -218,7 +218,7 @@ function initialize()
 	
 	mesh4 = new THREE.Mesh( geometry4, material4 );
 	mesh4.rotation.x = -Math.PI/2;
-	mesh4.position.x += -1.25;
+	mesh4.position.x += -1.20;
 	mesh4.position.z += 1.75;
 
 	markerRoot2.add( mesh4 );
@@ -242,8 +242,8 @@ function initialize()
 	
 	mesh6 = new THREE.Mesh( geometry6, material6 );
 	mesh6.rotation.x = -Math.PI/2;
-	mesh6.position.x += 1.0;
-	mesh6.position.z += 1.63;
+	mesh6.position.x += 1.2;
+	mesh6.position.z += 1.61;
 	
 	markerRoot3.add( mesh6 );
 }
