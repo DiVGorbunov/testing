@@ -27,6 +27,18 @@
 <video id="video3" autoplay loop crossOrigin="anonymous" webkit-playsinline style="display:none">
 	<source src="video/video3.mp4" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"'>
 </video>
+
+<video id="video4" autoplay loop crossOrigin="anonymous" webkit-playsinline style="display:none">
+	<source src="video/video4.mp4" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"'>
+</video>
+
+<video id="video5" autoplay loop crossOrigin="anonymous" webkit-playsinline style="display:none">
+	<source src="video/video5.mp4" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"'>
+</video>
+
+<video id="video6" autoplay loop crossOrigin="anonymous" webkit-playsinline style="display:none">
+	<source src="video/video6.mp4" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"'>
+</video>
 		
 <!-- 
   Example created by Lee Stemkoski: https://github.com/stemkoski
@@ -43,7 +55,7 @@ var markerRoot1;
 var markerRoot2;
 var markerRoot3;
 
-var mesh1, mesh2, mesh3;
+var mesh1, mesh2, mesh3, mesh4, mesh5, mesh6;
 
 initialize();
 animate();
@@ -139,8 +151,11 @@ function initialize()
 	})
 
 	let geometry1 = new THREE.PlaneBufferGeometry(1.246,1.660, 1,1);
-	let geometry2 = new THREE.PlaneBufferGeometry(1.108,0.832, 1,1);
-	let geometry3 = new THREE.PlaneBufferGeometry(0.888,1.184, 1,1);
+	let geometry2 = new THREE.PlaneBufferGeometry(0.888,1.184, 1,1);
+	let geometry3 = new THREE.PlaneBufferGeometry(1.108,0.832, 1,1);
+	let geometry4 = new THREE.PlaneBufferGeometry(1.246,1.660, 1,1);
+	let geometry5 = new THREE.PlaneBufferGeometry(0.888,1.184, 1,1);
+	let geometry6 = new THREE.PlaneBufferGeometry(1.108,0.832, 1,1);
 
 	let video1 = document.getElementById( 'video1' );
 	let texture1 = new THREE.VideoTexture( video1 );
@@ -151,6 +166,15 @@ function initialize()
 	let video3 = document.getElementById( 'video3' );
 	let texture3 = new THREE.VideoTexture( video3 );
 
+	let video4 = document.getElementById( 'video4' );
+	let texture4 = new THREE.VideoTexture( video4 );
+
+	let video5 = document.getElementById( 'video5' );
+	let texture5 = new THREE.VideoTexture( video5 );
+
+	let video6 = document.getElementById( 'video6' );
+	let texture6 = new THREE.VideoTexture( video6 );
+
 	texture1.minFilter = THREE.LinearMipmapLinearFilter;
 	texture1.magFilter = THREE.LinearMipmapLinearFilter;
 	texture1.format = THREE.RGBFormat;
@@ -158,8 +182,8 @@ function initialize()
 	
 	mesh1 = new THREE.Mesh( geometry1, material1 );
 	mesh1.rotation.x = -Math.PI/2;
-	mesh1.position.x -= 1.4;
-	mesh1.position.z += 0.3;
+	mesh1.position.x -= 1.42;
+	mesh1.position.z -= 0.3;
 	
 	markerRoot1.add( mesh1 );
 
@@ -182,10 +206,22 @@ function initialize()
 	
 	mesh3 = new THREE.Mesh( geometry3, material3 );
 	mesh3.rotation.x = -Math.PI/2;
-	//mesh3.position.x += 1.5;
+	mesh3.position.x -= 1.5;
 	//mesh2.position.z += .0;
 
 	markerRoot2.add( mesh3 );
+
+	texture4.minFilter = THREE.LinearMipmapLinearFilter;
+	texture4.magFilter = THREE.LinearFilter;
+	texture4.format = THREE.RGBFormat;
+	let material4 = new THREE.MeshBasicMaterial( { map: texture4 } );
+	
+	mesh4 = new THREE.Mesh( geometry4, material4 );
+	mesh4.rotation.x = -Math.PI/2;
+	mesh4.position.x += 1.5;
+	//mesh2.position.z += .0;
+
+	markerRoot2.add( mesh4 );
 }
 
 
