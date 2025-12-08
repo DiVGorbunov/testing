@@ -30,7 +30,6 @@
             padding: 20px;
         }
 
-        /* Логотип NET в верхнем левом углу */
         .logo {
             position: absolute;
             top: 20px;
@@ -42,7 +41,6 @@
             height: auto;
         }
 
-        /* Текстовый блок */
         .text-content {
             color: white;
             text-align: right;
@@ -61,11 +59,9 @@
             margin: 10px 0 30px;
         }
 
-        /* Кнопки для App Store и Google Play */
-        .buttons {
-            display: flex;
-            gap: 20px;
 
+        .buttons {
+            gap: 20px;
         }
 
         .buttons img {
@@ -73,7 +69,6 @@
             height: auto;
         }
 
-        /* Изображение смартфона справа */
         .image-content {
             display: flex;
             justify-content: center;
@@ -84,7 +79,6 @@
             height: auto;
         }
 
-	/* Общие стили для кнопки */
         .custom-button {
             display: inline-flex;
             align-items: center;
@@ -109,7 +103,6 @@ border: white;
             background-color: #00aa00;
         }
 
-        /* Нижний текстовый блок с правами и ссылками */
         .footer {
             position: absolute;
             bottom: 20px;
@@ -130,7 +123,6 @@ border: white;
             text-decoration: underline;
         }
 
-        /* Адаптация для мобильных устройств */
         @media (max-width: 768px) {
             .container {
                 flex-direction: column;
@@ -184,26 +176,23 @@ border: white;
 <body>
 
     <div class="container">
-        <!-- Левый блок с текстом -->
         <div class="text-content">
             <h1>Instant Munchkin</h1>
             <h2>Companion App</h2>
             <p>Instant start. Share game progress with friends</p>
-            <!--div class="buttons">
-                <a href="#"><img src="https://upload.wikimedia.org/wikipedia/commons/3/3c/Download_on_the_App_Store_Badge.svg" alt="Download on the App Store"></a>
-                <a href="#"><img src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg" alt="Get it on Google Play"></a>
+            <div class="buttons">
+                <!--a href="#"><img src="https://upload.wikimedia.org/wikipedia/commons/3/3c/Download_on_the_App_Store_Badge.svg" alt="Download on the App Store"></a-->
+                <a href="https://play.google.com/store/apps/details?id=com.instantmunchkin.app"><img src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg" alt="Get it on Google Play"></a>
 		
-            </div-->
+            </div>
 <a href="/app" class="custom-button">Try now</a>
         </div>
 
-        <!-- Правый блок с изображением смартфона -->
         <div class="image-content">
             <img src="Phone_screen_black_shadow1.png" alt="Smartphone">
         </div>
     </div>
 
-    <!-- Нижний текст -->
     <div class="footer">
         <div>
             <a href="#">Privacy & policy</a>
