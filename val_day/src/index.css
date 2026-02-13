@@ -1,0 +1,74 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 340 80% 88%;
+    --foreground: 340 60% 20%;
+
+    --card: 340 70% 92%;
+    --card-foreground: 340 60% 20%;
+
+    --popover: 340 70% 92%;
+    --popover-foreground: 340 60% 20%;
+
+    --primary: 350 80% 55%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 330 60% 80%;
+    --secondary-foreground: 340 60% 20%;
+
+    --muted: 340 40% 85%;
+    --muted-foreground: 340 30% 50%;
+
+    --accent: 20 90% 65%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 340 40% 80%;
+    --input: 340 40% 80%;
+    --ring: 350 80% 55%;
+
+    --radius: 1rem;
+
+    --gradient-bg: linear-gradient(135deg, hsl(330, 80%, 85%), hsl(350, 90%, 75%), hsl(10, 80%, 80%));
+    --heart-red: 0 85% 50%;
+    --heart-glow: 350 100% 60%;
+    --btn-yes: 140 60% 45%;
+    --btn-yes-foreground: 0 0% 100%;
+    --btn-no: 220 15% 55%;
+    --btn-no-foreground: 0 0% 100%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    background: var(--gradient-bg);
+    overflow: hidden;
+  }
+}
+
+@keyframes heartbeat {
+  0%, 100% { transform: translate(-50%, -50%) scale(1); }
+  15% { transform: translate(-50%, -50%) scale(1.15); }
+  30% { transform: translate(-50%, -50%) scale(1); }
+  45% { transform: translate(-50%, -50%) scale(1.1); }
+  60% { transform: translate(-50%, -50%) scale(1); }
+}
+
+@keyframes glow-pulse {
+  0%, 100% { filter: drop-shadow(0 0 20px hsl(350, 100%, 60%)) drop-shadow(0 0 60px hsl(350, 100%, 50%)); }
+  50% { filter: drop-shadow(0 0 40px hsl(350, 100%, 65%)) drop-shadow(0 0 100px hsl(350, 100%, 55%)); }
+}
+
+.heart-beating {
+  animation: heartbeat 1.2s ease-in-out infinite, glow-pulse 1.5s ease-in-out infinite;
+}
