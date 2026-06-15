@@ -1,205 +1,762 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Instant Munchkin</title>
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: 'Arial', sans-serif;
-            background-color: #5d2800;
-            background-image: linear-gradient(34deg, #5d2800 0%, #903d00 11%, #ffb968 89%);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            overflow: hidden;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="color-scheme" content="light dark" />
 
+  <title>Instant Munchkin — Companion App</title>
+  <meta name="description" content="Instant Munchkin is the companion app for Munchkin night. Track levels, gear and combat, and share game progress with friends. Instant start, no account. Android & iOS." />
 
+  <link rel="canonical" href="https://instantmunchkin.com/" />
+  <link rel="icon" href="favicon.ico" />
+  <link rel="apple-touch-icon" href="app/icons/Icon-192.png" />
 
-        .container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            max-width: 1200px;
-            width: 40%;
-            padding: 20px;
-        }
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Instant Munchkin — Companion App" />
+  <meta property="og:description" content="Instant start. Share game progress with friends. The companion app for Munchkin night." />
+  <meta property="og:url" content="https://instantmunchkin.com/" />
+  <meta property="og:image" content="https://instantmunchkin.com/Phone_screen.png" />
+  <meta name="twitter:card" content="summary_large_image" />
 
-        .logo {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-        }
+  <meta name="theme-color" content="#EFE2C6" media="(prefers-color-scheme: light)" />
+  <meta name="theme-color" content="#16110B" media="(prefers-color-scheme: dark)" />
 
-        .logo img {
-            max-width: 150px;
-            height: auto;
-        }
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700;9..144,900&family=Inter:wght@400;500;600&display=swap" />
 
-        .text-content {
-            color: white;
-            text-align: right;
-            max-width: 400px;
-            text-align: right;
+  <script>
+    (function () {
+      var d = document.documentElement;
+      d.classList.add('js');
+      try {
+        var stored = localStorage.getItem('im-theme');
+        d.setAttribute('data-theme', stored || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'));
+      } catch (e) {}
+    })();
+  </script>
 
-        }
+  <style>
+    /* ============================================================
+       TOKENS  (same palette & feel, parchment-forward)
+       ============================================================ */
+    :root {
+      --parchment:   #EFE1C4;
+      --parchment-2: #E7D5B0;
+      --surface:     #FBF4E5;
+      --card:        #FFFCF4;
 
-        .text-content h1 {
-            font-size: 3em;
-            margin: 0 0 10px;
-        }
+      --ink:    #3A2412;   /* warm brown for headings */
+      --ink-2:  #5C4736;
+      --ink-3:  #8A7359;
 
-        .text-content p {
-            font-size: 1.2em;
-            margin: 10px 0 30px;
-        }
+      --line:   rgba(80, 52, 24, 0.16);
+      --line-2: rgba(80, 52, 24, 0.08);
 
+      --gold:        #BC7A12;
+      --gold-strong: #9C6109;
+      --gold-soft:   #E7B85F;
+      --gold-line:   #C39A4B;
 
-        .buttons {
-            gap: 20px;
-        }
+      --green:   #5f8233;
+      --green-2: #496326;
+      --green-ink: #F7ECC4;
 
-        .buttons img {
-            width: 150px;
-            height: auto;
-        }
+      --leather:   #7c5230;
+      --leather-2: #5b3a1f;
+      --leather-ink: #F2E5C6;
 
-        .image-content {
-            display: flex;
-            justify-content: center;
-                    }
+      --ember:    #C0492F;
+      --ember-soft: #F0A98A;
 
-        .image-content img {
-            max-width: 400px;
-            height: auto;
-        }
+      /* night subpage */
+      --night:     #16110B;
+      --night-2:   #1F1810;
 
-        .custom-button {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            background-color: green;
-            color: white;
-            padding: 10px 20px;
-		margin-top: 10px;
-            border-radius: 5px;
-		border: 2px;
-border: white;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-            font-weight: 500;
-            font-size: 16px;
-            text-decoration: none;
-            transition: background-color 0.3s ease;
-            cursor: pointer;
-		width: 109px;
-        }
+      --shadow-sm: 0 1px 2px rgba(60,36,12,0.08), 0 2px 6px rgba(60,36,12,0.06);
+      --shadow-md: 0 6px 16px rgba(60,36,12,0.12), 0 18px 40px rgba(60,36,12,0.12);
+      --shadow-lg: 0 14px 34px rgba(60,36,12,0.18), 0 40px 70px rgba(60,36,12,0.20);
 
-.custom-button:hover {
-            background-color: #00aa00;
-        }
+      --s-1: 4px; --s-2: 8px; --s-3: 12px; --s-4: 16px;
+      --s-5: 24px; --s-6: 32px; --s-7: 48px; --s-8: 64px;
 
-        .footer {
-            position: absolute;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            color: white;
-            text-align: center;
-            font-size: 0.9em;
-        }
+      --r-sm: 8px; --r-md: 12px; --r-lg: 18px; --r-xl: 26px; --r-pill: 999px;
 
-        .footer a {
-            color: white;
-            text-decoration: none;
-            margin: 0 15px;
-        }
+      --container: 1180px;
+      --display: "Fraunces", Georgia, "Times New Roman", serif;
+      --sans: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      --mono: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+    }
 
-        .footer a:hover {
-            text-decoration: underline;
-        }
+    [data-theme="dark"] {
+      --parchment:   #16110B;
+      --parchment-2: #100C07;
+      --surface:     #1F1810;
+      --card:        #241C12;
 
-        @media (max-width: 768px) {
-            .container {
-                flex-direction: column;
-                text-align: center;
-            }
+      --ink:    #F3E6CE;
+      --ink-2:  #C8B498;
+      --ink-3:  #94806A;
 
-            .text-content {
-                text-align: center;
-            }
+      --line:   rgba(240, 222, 180, 0.14);
+      --line-2: rgba(240, 222, 180, 0.07);
 
-            .buttons {
-                flex-direction: column;
-                gap: 10px;
-            }
+      --gold:        #E8B25A;
+      --gold-strong: #F0BE6A;
+      --gold-soft:   #C7902F;
+      --gold-line:   #B98E3E;
 
-            .buttons img {
-                width: 120px;
-            }
+      --green:   #6f9a3a;
+      --green-2: #4d6b27;
 
-            .image-content img {
-                max-width: 0px;
-            }
+      --leather:   #6e4a2c;
+      --leather-2: #4a2f1a;
 
-        }
+      --shadow-sm: 0 1px 2px rgba(0,0,0,0.4);
+      --shadow-md: 0 8px 22px rgba(0,0,0,0.5);
+      --shadow-lg: 0 22px 50px rgba(0,0,0,0.62);
+    }
 
-	@keyframes fadeIn {
-        from {
-                opacity: 0;
+    /* ============================================================
+       BASE
+       ============================================================ */
+    *, *::before, *::after { box-sizing: border-box; }
 
-                transform: scale(1) translateY(300px);
-        }
-        to {
-                opacity: 1;
+    html.js, html.js body { height: 100%; overflow: hidden; }  /* lock: page is unscrollable */
 
-                transform: scale(1) translateY(0);
-        }}
+    body {
+      margin: 0;
+      font-family: var(--sans);
+      color: var(--ink-2);
+      background-color: var(--parchment);
+      background-image:
+        radial-gradient(70% 55% at 18% 8%, rgba(120,80,30,0.10), transparent 60%),
+        radial-gradient(60% 50% at 92% 96%, rgba(120,80,30,0.10), transparent 60%),
+        radial-gradient(40% 40% at 80% 12%, rgba(192,73,47,0.05), transparent 60%);
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+    /* subtle paper grain */
+    body::after {
+      content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none;
+      opacity: 0.05; mix-blend-mode: multiply;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    }
+    [data-theme="dark"] body::after { mix-blend-mode: screen; opacity: 0.04; }
 
-        @keyframes fadeInText {
-        from {
-                opacity: 0;
-                transform: translateX(-100px);
-        }
-        to {
-                opacity: 1;
-                transform: translateX(0);
-        }
-}
+    a { color: inherit; text-decoration: none; }
+    img, svg { display: block; max-width: 100%; }
+    button { font-family: inherit; cursor: pointer; }
 
-    </style>
+    h1, h2, h3 { font-family: var(--display); color: var(--ink); margin: 0; line-height: 1.02; letter-spacing: -0.02em; }
+
+    ::selection { background: var(--gold-soft); color: #2a1a08; }
+    :focus-visible { outline: 3px solid var(--gold); outline-offset: 3px; border-radius: 6px; }
+
+    .skip-link {
+      position: fixed; left: 50%; top: -60px; transform: translateX(-50%);
+      background: var(--gold); color: #2a1a08; padding: 10px 18px; border-radius: var(--r-pill);
+      font-weight: 600; z-index: 200; transition: top .2s ease;
+    }
+    .skip-link:focus { top: 12px; }
+
+    /* ============================================================
+       HOME  (single, unscrollable screen)
+       ============================================================ */
+    .home {
+      position: relative;
+      height: 100vh; height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      padding: clamp(14px, 2.4vh, 28px) clamp(18px, 4vw, 56px);
+      transition: transform .5s cubic-bezier(.4,0,.2,1), opacity .5s ease, filter .5s ease;
+    }
+    html.subpage-open .home { transform: translateY(-26px); opacity: 0.35; filter: saturate(0.7); }
+
+    .theme-toggle {
+      position: absolute; top: clamp(14px, 2.4vh, 24px); right: clamp(16px, 4vw, 40px);
+      z-index: 30;
+      width: 44px; height: 44px; border-radius: var(--r-pill);
+      border: 1px solid var(--line); background: var(--surface); color: var(--ink);
+      display: grid; place-items: center;
+      box-shadow: var(--shadow-sm);
+      transition: transform .25s ease, border-color .2s ease, color .2s ease;
+    }
+    .theme-toggle:hover { border-color: var(--gold); color: var(--gold-strong); transform: rotate(-12deg); }
+    [data-theme="dark"] .theme-toggle:hover { color: var(--gold); }
+    .theme-toggle .icon-sun { display: none; }
+    [data-theme="dark"] .theme-toggle .icon-sun { display: block; }
+    [data-theme="dark"] .theme-toggle .icon-moon { display: none; }
+
+    .home__inner {
+      flex: 1 1 auto;
+      min-height: 0;
+      width: 100%;
+      max-width: var(--container);
+      margin-inline: auto;
+      z-index: 5;
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      grid-template-rows: auto auto;
+      column-gap: clamp(20px, 4vw, 64px);
+      align-content: center;
+      justify-items: start;
+    }
+    .home__text   { grid-column: 1; grid-row: 1; align-self: end; }
+    .home__cta    { grid-column: 1; grid-row: 2; align-self: start; padding-top: clamp(14px, 2.6vh, 28px); }
+    .home__visual { grid-column: 2; grid-row: 1 / span 2; align-self: center; justify-self: center; min-height: 0; }
+
+    .eyebrow {
+      font-family: var(--mono); font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase;
+      color: var(--gold-strong); font-weight: 600; display: inline-flex; align-items: center; gap: 9px;
+      margin-bottom: clamp(8px, 1.4vh, 14px);
+    }
+    [data-theme="dark"] .eyebrow { color: var(--gold); }
+    .eyebrow::before { content: ""; width: 24px; height: 1.5px; background: currentColor; }
+
+    .title {
+      font-weight: 900;
+      font-size: clamp(2.9rem, 1.4rem + 6.4vw, 5.4rem);
+      letter-spacing: -0.035em;
+      color: var(--ink);
+      text-wrap: balance;
+    }
+    .title .light { color: var(--gold-strong); font-style: italic; font-weight: 600; }
+    [data-theme="dark"] .title .light { color: var(--gold); }
+
+    .subtitle {
+      font-family: var(--display); font-weight: 600;
+      font-size: clamp(1.25rem, 0.9rem + 1.4vw, 1.9rem);
+      color: var(--ink); margin-top: clamp(2px, 0.6vh, 8px);
+    }
+    .tagline {
+      font-size: clamp(1rem, 0.92rem + 0.5vw, 1.25rem);
+      color: var(--ink-2); margin-top: clamp(8px, 1.4vh, 16px); max-width: 30ch;
+    }
+
+    /* ---- Ornate green TRY NOW ---- */
+    .btn-try {
+      position: relative;
+      display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+      font-family: var(--display); font-weight: 700; font-size: clamp(1.05rem, 0.9rem + 0.7vw, 1.4rem);
+      letter-spacing: 0.04em; text-transform: uppercase;
+      color: var(--green-ink);
+      padding: clamp(13px, 1.8vh, 18px) clamp(34px, 5vw, 56px);
+      border-radius: var(--r-md);
+      border: 2px solid var(--gold-line);
+      background-image:
+        radial-gradient(circle at 11px 11px, #e6c061 0 2.4px, transparent 3px),
+        radial-gradient(circle at calc(100% - 11px) 11px, #e6c061 0 2.4px, transparent 3px),
+        radial-gradient(circle at 11px calc(100% - 11px), #e6c061 0 2.4px, transparent 3px),
+        radial-gradient(circle at calc(100% - 11px) calc(100% - 11px), #e6c061 0 2.4px, transparent 3px),
+        linear-gradient(180deg, var(--green), var(--green-2));
+      text-shadow: 0 1px 1px rgba(20,30,10,0.5);
+      box-shadow: var(--shadow-md), inset 0 1px 0 rgba(255,255,255,0.28), inset 0 -2px 6px rgba(20,30,10,0.3);
+      transition: transform .18s ease, box-shadow .2s ease, filter .2s ease;
+    }
+    .btn-try::before {
+      content: ""; position: absolute; inset: 4px; border-radius: 8px;
+      border: 1px solid rgba(230,192,97,0.45); pointer-events: none;
+    }
+    .btn-try:hover { transform: translateY(-2px); filter: brightness(1.06); box-shadow: var(--shadow-lg), inset 0 1px 0 rgba(255,255,255,0.32); }
+    .btn-try:active { transform: translateY(1px) scale(0.99); }
+
+    /* ---- Leather store badges ---- */
+    .store-row { display: flex; flex-wrap: wrap; gap: 14px; margin-top: clamp(12px, 2vh, 20px); }
+    .badge-leather {
+      position: relative;
+      display: inline-flex; align-items: center; gap: 12px;
+      padding: 10px 22px 10px 20px;
+      border-radius: var(--r-md);
+      border: 2px solid var(--gold-line);
+      color: var(--leather-ink);
+      min-width: 188px;
+      background-image:
+        radial-gradient(circle at 10px 10px, #d9b15a 0 2.2px, transparent 2.8px),
+        radial-gradient(circle at calc(100% - 10px) 10px, #d9b15a 0 2.2px, transparent 2.8px),
+        radial-gradient(circle at 10px calc(100% - 10px), #d9b15a 0 2.2px, transparent 2.8px),
+        radial-gradient(circle at calc(100% - 10px) calc(100% - 10px), #d9b15a 0 2.2px, transparent 2.8px),
+        linear-gradient(180deg, var(--leather), var(--leather-2));
+      box-shadow: var(--shadow-sm), inset 0 1px 0 rgba(255,255,255,0.16), inset 0 -2px 5px rgba(20,12,4,0.3);
+      transition: transform .18s ease, box-shadow .2s ease, filter .2s ease;
+    }
+    .badge-leather:hover { transform: translateY(-2px); filter: brightness(1.06); box-shadow: var(--shadow-md); }
+    .badge-leather svg { flex: none; }
+    .badge-leather .bt { display: flex; flex-direction: column; line-height: 1.12; }
+    .badge-leather .bt small { font-size: 11px; opacity: 0.85; font-weight: 500; }
+    .badge-leather .bt strong { font-size: 18px; font-weight: 700; font-family: var(--display); letter-spacing: -0.01em; }
+
+    /* ---- Phone ---- */
+    .home__visual { position: relative; }
+    .home__visual::before {
+      content: ""; position: absolute; inset: -6% -4%;
+      background: radial-gradient(50% 50% at 50% 45%, rgba(231,184,95,0.28), transparent 70%);
+      filter: blur(8px); z-index: 0;
+    }
+    .phone {
+      position: relative; z-index: 2;
+      height: auto; width: auto;
+      max-height: 82dvh; max-width: 100%;
+      filter: drop-shadow(0 26px 44px rgba(40,20,5,0.30));
+      animation: floaty 7s ease-in-out infinite;
+    }
+    @keyframes floaty { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+
+    /* ---- Footer (in-flow, sits at the bottom of the screen) ---- */
+    .home__footer {
+      flex: 0 0 auto; z-index: 6;
+      display: flex; align-items: center; justify-content: center; gap: clamp(10px, 2vw, 26px);
+      padding-top: clamp(8px, 1.4vh, 14px); flex-wrap: wrap;
+    }
+    .footer-link {
+      background: none; border: 0; color: var(--ink-2);
+      font-family: var(--sans); font-size: 0.95rem; font-weight: 500;
+      padding: 6px 2px; position: relative;
+    }
+    .footer-link::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 1.5px; background: var(--gold); transform: scaleX(0); transition: transform .2s ease; }
+    .footer-link:hover { color: var(--ink); }
+    .footer-link:hover::after { transform: scaleX(1); }
+    .footer-sep { color: var(--ink-3); opacity: 0.5; user-select: none; }
+    .footer-diamond { color: var(--gold); opacity: 0.7; }
+
+    /* ============================================================
+       DECORATIONS  (desktop only, ambient — abstract cards + dice)
+       ============================================================ */
+    .deco { position: absolute; inset: 0; z-index: 1; pointer-events: none; overflow: hidden; display: none; }
+    .deco-card {
+      position: absolute; width: 132px; height: 186px; border-radius: 12px;
+      background: linear-gradient(160deg, #f6eccf, #e9d6ac);
+      border: 2px solid rgba(120,80,35,0.45);
+      box-shadow: var(--shadow-md);
+      opacity: 0.5;
+      padding: 10px;
+      animation: bob 9s ease-in-out infinite;
+    }
+    [data-theme="dark"] .deco-card { background: linear-gradient(160deg, #2c2216, #211a10); border-color: rgba(200,160,90,0.3); opacity: 0.4; }
+    .deco-card::before {
+      content: ""; display: block; height: 14px; border-radius: 4px;
+      background: rgba(120,80,35,0.28); margin-bottom: 8px;
+    }
+    .deco-card .emblem { display: grid; place-items: center; height: 76px; color: rgba(120,80,35,0.4); }
+    [data-theme="dark"] .deco-card .emblem { color: rgba(200,160,90,0.35); }
+    .deco-card .lines { margin-top: 8px; height: 28px; border-radius: 4px;
+      background: repeating-linear-gradient(rgba(120,80,35,0.22) 0 2px, transparent 2px 7px); }
+    .deco-die {
+      position: absolute; width: 52px; height: 52px; border-radius: 13px;
+      background: linear-gradient(160deg, #f4e8c8, #e2cd9c);
+      border: 1.5px solid rgba(120,80,35,0.4);
+      box-shadow: var(--shadow-sm);
+      opacity: 0.6; display: grid; grid-template-columns: repeat(3,1fr); grid-template-rows: repeat(3,1fr);
+      padding: 9px; animation: bob 11s ease-in-out infinite;
+    }
+    [data-theme="dark"] .deco-die { background: linear-gradient(160deg, #2c2216, #211a10); border-color: rgba(200,160,90,0.3); }
+    .deco-die i { width: 7px; height: 7px; border-radius: 50%; background: rgba(80,52,24,0.7); align-self: center; justify-self: center; }
+    [data-theme="dark"] .deco-die i { background: rgba(220,185,120,0.7); }
+
+    .deco-card.c1 { top: 8%;  left: -34px;  transform: rotate(-13deg); }
+    .deco-card.c2 { bottom: 6%; left: -48px; transform: rotate(9deg); animation-delay: -3s; }
+    .deco-card.c3 { top: 10%; right: -40px; transform: rotate(12deg); animation-delay: -1.5s; }
+    .deco-card.c4 { bottom: 8%; right: -30px; transform: rotate(-8deg); animation-delay: -4.5s; }
+    .deco-die.d1 { top: 22%; right: 9%; transform: rotate(12deg); }
+    .deco-die.d2 { bottom: 16%; right: 16%; transform: rotate(-14deg); animation-delay: -2s; }
+    .deco-die.d3 { bottom: 26%; left: 9%; transform: rotate(8deg); animation-delay: -5s; }
+
+    @keyframes bob { 0%,100% { translate: 0 0; } 50% { translate: 0 -12px; } }
+
+    @media (min-width: 1060px) { .deco { display: block; } }
+    @media (prefers-reduced-motion: reduce) {
+      .phone, .deco-card, .deco-die { animation: none; }
+    }
+
+    /* ============================================================
+       SUBPAGES  (slide up, scrollable, with Back button)
+       ============================================================ */
+    .subpage {
+      position: fixed; inset: 0; z-index: 50;
+      background-color: var(--parchment);
+      background-image:
+        radial-gradient(70% 55% at 18% 6%, rgba(120,80,30,0.10), transparent 60%),
+        radial-gradient(60% 50% at 92% 98%, rgba(120,80,30,0.10), transparent 60%);
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      transform: translateY(100%);
+      transition: transform .5s cubic-bezier(.4,0,.2,1);
+      visibility: hidden;
+    }
+    html.js .subpage[hidden] { display: block; }   /* keep transitionable; visibility hides it */
+    .subpage.open { transform: translateY(0); visibility: visible; }
+    @media (prefers-reduced-motion: reduce) { .subpage { transition: none; } }
+
+    .subpage__bar {
+      position: sticky; top: 0; z-index: 2;
+      display: flex; align-items: center; gap: 16px;
+      padding: 14px clamp(18px, 4vw, 40px);
+      background: color-mix(in srgb, var(--parchment) 88%, transparent);
+      backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--line);
+    }
+    .back-btn {
+      display: inline-flex; align-items: center; gap: 9px;
+      background: var(--surface); border: 1px solid var(--line); color: var(--ink);
+      padding: 9px 18px 9px 14px; border-radius: var(--r-pill); font-weight: 600; font-size: 0.95rem;
+      box-shadow: var(--shadow-sm);
+      transition: transform .18s ease, border-color .2s ease, color .2s ease;
+    }
+    .back-btn:hover { transform: translateX(-3px); border-color: var(--gold); color: var(--gold-strong); }
+    [data-theme="dark"] .back-btn:hover { color: var(--gold); }
+    .subpage__bar h2 { font-size: 1.2rem; font-weight: 600; }
+
+    .subpage__body { max-width: 760px; margin-inline: auto; padding: clamp(28px, 5vw, 56px) clamp(20px, 5vw, 32px) 90px; }
+    .subpage__body .lead-eyebrow {
+      font-family: var(--mono); font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase;
+      color: var(--gold-strong); font-weight: 600;
+    }
+    [data-theme="dark"] .subpage__body .lead-eyebrow { color: var(--gold); }
+    .subpage__body h1 { font-size: clamp(2rem, 1.4rem + 2.6vw, 3rem); margin: 10px 0 6px; }
+    .subpage__body .intro { font-size: 1.12rem; color: var(--ink-2); margin: 0 0 8px; }
+    .doc-note {
+      font-size: 0.85rem; color: var(--ink-3); font-style: italic;
+      border-left: 2px solid var(--gold-line); padding: 4px 0 4px 12px; margin: 18px 0 28px;
+    }
+    .doc h3 { font-size: 1.25rem; margin: 30px 0 8px; }
+    .doc p { color: var(--ink-2); margin: 0 0 12px; }
+    .doc ul { color: var(--ink-2); margin: 0 0 12px; padding-left: 20px; }
+    .doc li { margin-bottom: 6px; }
+    .doc a { color: var(--gold-strong); font-weight: 600; }
+    [data-theme="dark"] .doc a { color: var(--gold); }
+
+    /* FAQ accordion */
+    .faq-item { border-bottom: 1px solid var(--line); }
+    .faq-q {
+      width: 100%; background: none; border: 0; text-align: left;
+      display: flex; align-items: center; justify-content: space-between; gap: 16px;
+      padding: 22px 4px; font-size: 1.12rem; font-weight: 600;
+      font-family: var(--display); color: var(--ink);
+    }
+    .faq-q:hover { color: var(--gold-strong); }
+    [data-theme="dark"] .faq-q:hover { color: var(--gold); }
+    .faq-q .chev { flex: none; transition: transform .25s ease; color: var(--gold-strong); }
+    [data-theme="dark"] .faq-q .chev { color: var(--gold); }
+    .faq-q[aria-expanded="true"] .chev { transform: rotate(45deg); }
+    .faq-a { overflow: hidden; max-height: 0; transition: max-height .3s ease; }
+    @media (prefers-reduced-motion: reduce) { .faq-a { transition: none; } }
+    .faq-a-inner { padding: 0 4px 22px; color: var(--ink-2); }
+
+    /* ============================================================
+       RESPONSIVE
+       ============================================================ */
+    @media (max-width: 900px) {
+      .home__inner {
+        display: flex; flex-direction: column; align-items: center; text-align: center;
+        gap: clamp(8px, 1.5vh, 16px);
+      }
+      .home__text { align-self: center; }
+      .home__cta { align-self: center; padding-top: clamp(10px, 1.6vh, 18px); order: 3; width: 100%; }
+      .home__cta .store-row, .home__cta .btn-try { justify-content: center; }
+      .home__cta .btn-try { display: flex; }
+      .home__visual { order: 2; flex: 1 1 auto; display: grid; place-items: center; width: 100%; }
+      .eyebrow { justify-content: center; }
+      .eyebrow-suffix { display: none; }
+      .tagline { margin-inline: auto; }
+      .store-row { justify-content: center; }
+      .phone { max-height: 42dvh; }
+    }
+    @media (max-width: 560px) {
+      .store-row { flex-direction: column; align-items: stretch; width: 100%; max-width: 340px; margin-inline: auto; }
+      .badge-leather { min-width: 0; justify-content: center; }
+      .btn-try { width: 100%; max-width: 340px; }
+      .phone { max-height: 38dvh; }
+      .home__footer { gap: 12px; }
+    }
+    @media (max-height: 680px) and (max-width: 900px) {
+      .phone { max-height: 32dvh; }
+    }
+  </style>
 </head>
 <body>
+  <a class="skip-link" href="#home-text">Skip to content</a>
 
-    <div class="container">
-        <div class="text-content">
-            <h1>Instant Munchkin</h1>
-            <h2>Companion App</h2>
-            <p>Instant start. Share game progress with friends</p>
-            <div class="buttons">
-                <!--a href="#"><img src="https://upload.wikimedia.org/wikipedia/commons/3/3c/Download_on_the_App_Store_Badge.svg" alt="Download on the App Store"></a-->
-                <a href="https://play.google.com/store/apps/details?id=com.instantmunchkin.app"><img src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg" alt="Get it on Google Play"></a>
-		
-            </div>
-<a href="/app" class="custom-button">Try now</a>
-        </div>
+  <!-- ===================== HOME (unscrollable) ===================== -->
+  <main class="home" id="home">
+    <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Toggle dark mode">
+      <svg class="icon-moon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+      <svg class="icon-sun" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+    </button>
 
-        <div class="image-content">
-            <img src="Phone_screen_black_shadow1.png" alt="Smartphone">
-        </div>
+    <!-- ambient decorations (desktop) -->
+    <div class="deco" aria-hidden="true">
+      <div class="deco-card c1"><div class="emblem"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"><path d="M12 2l8.5 5v10L12 22l-8.5-5V7L12 2z"/><path d="M12 2l5 8-5 12-5-12 5-8z"/><path d="M3.5 7L12 10l8.5-3"/></svg></div><div class="lines"></div></div>
+      <div class="deco-card c2"><div class="emblem"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 17.5 3 6V3h3l11.5 11.5M13 19l6-6M16 16l4 4"/></svg></div><div class="lines"></div></div>
+      <div class="deco-card c3"><div class="emblem"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v10M7 12h10"/></svg></div><div class="lines"></div></div>
+      <div class="deco-card c4"><div class="emblem"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"><path d="M3 12l9-9 9 9-9 9-9-9z"/></svg></div><div class="lines"></div></div>
+      <div class="deco-die d1"><i style="grid-area:1/1"></i><i style="grid-area:1/3"></i><i style="grid-area:2/2"></i><i style="grid-area:3/1"></i><i style="grid-area:3/3"></i></div>
+      <div class="deco-die d2"><i style="grid-area:1/1"></i><i style="grid-area:2/2"></i><i style="grid-area:3/3"></i></div>
+      <div class="deco-die d3"><i style="grid-area:1/1"></i><i style="grid-area:1/3"></i><i style="grid-area:3/1"></i><i style="grid-area:3/3"></i></div>
     </div>
 
-    <div class="footer">
-        <div>
-            <a href="#">Privacy & policy</a>
-            <a href="#">Terms of service</a>
-            <a href="#">FAQ</a>
+    <div class="home__inner">
+      <div class="home__text" id="home-text">
+        <span class="eyebrow">Munchkin companion<span class="eyebrow-suffix"> · Android &amp; iOS</span></span>
+        <h1 class="title">Instant<br>Munchkin</h1>
+        <p class="subtitle">Companion App</p>
+        <p class="tagline">Instant start. Track levels, gear and combat — and share game progress with everyone at the table.</p>
+      </div>
+
+      <div class="home__cta">
+        <a class="btn-try" href="/app">Try now</a>
+        <div class="store-row">
+          <!-- TODO: replace href with the live App Store URL once iOS ships -->
+          <a class="badge-leather" href="#" aria-label="Download Instant Munchkin on the App Store">
+            <svg width="22" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16.4 12.7c0-2.2 1.8-3.3 1.9-3.4-1-1.5-2.6-1.7-3.2-1.7-1.4-.1-2.6.8-3.3.8-.7 0-1.7-.8-2.8-.8-1.4 0-2.8.8-3.5 2.1-1.5 2.6-.4 6.4 1.1 8.5.7 1 1.5 2.2 2.6 2.1 1-.04 1.4-.7 2.7-.7s1.6.7 2.7.6c1.1-.02 1.8-1 2.5-2 .8-1.2 1.1-2.3 1.1-2.4-.02-.01-2.1-.8-2.1-3.1zM14.2 5.9c.6-.7 1-1.7.9-2.7-.8.03-1.9.6-2.5 1.3-.5.6-1 1.6-.9 2.6.9.07 1.8-.5 2.5-1.2z"/></svg>
+            <span class="bt"><small>Download on the</small><strong>App Store</strong></span>
+          </a>
+          <a class="badge-leather" href="https://play.google.com/store/apps/details?id=com.instantmunchkin.app" aria-label="Get Instant Munchkin on Google Play">
+            <svg width="22" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 1.4a1.7 1.7 0 0 0-1 1.6v20c0 .7.4 1.3 1 1.6l11-11.6L3 1.4zM16.7 9.5l-2.4 2.4 2.4 2.5 3.3-1.9c1-.6 1-2 0-2.6l-3.3-2zM4.6 24.6c.4.1.8 0 1.2-.2l9.5-5.4-2.3-2.4-8.4 8zM4.6.9l8.4 8 2.3-2.4-9.5-5.4c-.4-.2-.8-.3-1.2-.2z"/></svg>
+            <span class="bt"><small>Get it on</small><strong>Google Play</strong></span>
+          </a>
         </div>
+      </div>
+
+      <div class="home__visual">
+        <img class="phone" src="Phone_screen_black_shadow1.png"
+             width="540" height="900" fetchpriority="high"
+             alt="Instant Munchkin showing player Ron at Strength 8, Level 3, Gear 5, with the table's standings below." />
+      </div>
     </div>
 
+    <nav class="home__footer" aria-label="More information">
+      <button class="footer-link" type="button" data-page="privacy">Privacy &amp; policy</button>
+      <span class="footer-sep" aria-hidden="true">·</span>
+      <button class="footer-link" type="button" data-page="terms">Terms of service</button>
+      <span class="footer-sep" aria-hidden="true">·</span>
+      <button class="footer-link" type="button" data-page="faq">FAQ</button>
+      <span class="footer-diamond" aria-hidden="true">✦</span>
+    </nav>
+  </main>
+
+  <!-- ===================== FAQ ===================== -->
+  <section class="subpage" id="page-faq" aria-labelledby="faq-title" role="region" hidden>
+    <div class="subpage__bar">
+      <button class="back-btn" type="button" data-close>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 18l-6-6 6-6"/></svg>
+        Back
+      </button>
+      <h2 id="faq-title">FAQ</h2>
+    </div>
+    <div class="subpage__body">
+      <span class="lead-eyebrow">Good questions</span>
+      <h1>Before you download.</h1>
+      <p class="intro">The things every Munchkin group asks first.</p>
+      <div class="faq-list" style="margin-top: 22px;">
+        <div class="faq-item">
+          <button class="faq-q" aria-expanded="false">Do I still need the actual Munchkin game?
+            <span class="chev" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span>
+          </button>
+          <div class="faq-a"><div class="faq-a-inner">Yes — it's a companion, not a replacement. Bring the cards; Instant Munchkin handles the scorekeeping, combat math and the running argument about who's actually winning.</div></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q" aria-expanded="false">How does sharing game progress work?
+            <span class="chev" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span>
+          </button>
+          <div class="faq-a"><div class="faq-a-inner">One player starts the session, the rest join it, and the live standings sync to every device. Everyone watches the same board update in real time — no host has to narrate the numbers.</div></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q" aria-expanded="false">Does everyone at the table need the app?
+            <span class="chev" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span>
+          </button>
+          <div class="faq-a"><div class="faq-a-inner">No. One device is enough to run the whole game. The shared screen is there for groups who want every player tracking the standings on their own phone — it's a bonus, not a requirement.</div></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q" aria-expanded="false">Is there an account or sign-up?
+            <span class="chev" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span>
+          </button>
+          <div class="faq-a"><div class="faq-a-inner">None. Open the app and start a session — no email, no password, nothing standing between you and the first card.</div></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q" aria-expanded="false">Which expansions does it support?
+            <span class="chev" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span>
+          </button>
+          <div class="faq-a"><div class="faq-a-inner">It tracks levels, gear and combat strength for any Munchkin set — base game or stacked with expansions. The numbers are the numbers, whatever's in your box.</div></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q" aria-expanded="false">Can I try it before installing?
+            <span class="chev" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span>
+          </button>
+          <div class="faq-a"><div class="faq-a-inner">Yes. Tap <strong>Try now</strong> on the home screen to open the web version in your browser before grabbing the mobile app.</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== PRIVACY ===================== -->
+  <section class="subpage" id="page-privacy" aria-labelledby="privacy-title" role="region" hidden>
+    <div class="subpage__bar">
+      <button class="back-btn" type="button" data-close>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 18l-6-6 6-6"/></svg>
+        Back
+      </button>
+      <h2 id="privacy-title">Privacy &amp; Policy</h2>
+    </div>
+    <div class="subpage__body doc">
+      <span class="lead-eyebrow">Privacy</span>
+      <h1>Privacy Policy</h1>
+      <p class="intro">How Instant Munchkin handles your information — short version: barely any of it.</p>
+      <p class="doc-note">Starter template. Review and adapt with a professional before publishing, and replace the contact address below.</p>
+
+      <h3>1. The short version</h3>
+      <p>Instant Munchkin is a companion app for the Munchkin card game. It works without an account and is designed to keep data on your device. We don't sell your data, and we don't want more of it than we need to run the app.</p>
+
+      <h3>2. What we collect</h3>
+      <ul>
+        <li><strong>Game data</strong> — player names you enter, levels, gear and scores. This is stored to run your session and, when you share a session, to sync it to other players' devices.</li>
+        <li><strong>Basic technical data</strong> — anonymous diagnostics and crash information that help us fix bugs and keep the app stable.</li>
+      </ul>
+      <p>We don't ask for your real name, email, contacts, photos or location.</p>
+
+      <h3>3. How we use it</h3>
+      <p>Solely to provide and improve the app: run your game, sync shared sessions between devices, and diagnose problems. We do not use your data for advertising profiles.</p>
+
+      <h3>4. Sharing</h3>
+      <p>Session data is shared only with the players you choose to share a game with. We don't share personal data with third parties except service providers that help operate the app (for example, crash reporting), under appropriate safeguards.</p>
+
+      <h3>5. Your choices</h3>
+      <p>You can clear game data at any time from within the app. Because there's no account, removing the app removes the data stored on your device.</p>
+
+      <h3>6. Children</h3>
+      <p>Instant Munchkin is intended for a general audience and does not knowingly collect personal information from children.</p>
+
+      <h3>7. Changes</h3>
+      <p>If this policy changes, we'll update this page and the "last updated" date below.</p>
+
+      <h3>8. Contact</h3>
+      <p>Questions? Email <a href="mailto:hello@instantmunchkin.com">hello@instantmunchkin.com</a>.</p>
+      <p style="color: var(--ink-3); font-size: 0.9rem;">Last updated: <span class="doc-date">2026</span>.</p>
+    </div>
+  </section>
+
+  <!-- ===================== TERMS ===================== -->
+  <section class="subpage" id="page-terms" aria-labelledby="terms-title" role="region" hidden>
+    <div class="subpage__bar">
+      <button class="back-btn" type="button" data-close>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 18l-6-6 6-6"/></svg>
+        Back
+      </button>
+      <h2 id="terms-title">Terms of Service</h2>
+    </div>
+    <div class="subpage__body doc">
+      <span class="lead-eyebrow">Terms</span>
+      <h1>Terms of Service</h1>
+      <p class="intro">The ground rules for using Instant Munchkin.</p>
+      <p class="doc-note">Starter template. Review and adapt with a professional before publishing.</p>
+
+      <h3>1. Acceptance</h3>
+      <p>By downloading or using Instant Munchkin, you agree to these terms. If you don't agree, please don't use the app.</p>
+
+      <h3>2. Your licence</h3>
+      <p>We grant you a personal, non-exclusive, non-transferable licence to use Instant Munchkin for tracking your own tabletop game sessions.</p>
+
+      <h3>3. Acceptable use</h3>
+      <ul>
+        <li>Don't copy, resell or redistribute the app.</li>
+        <li>Don't attempt to reverse-engineer, disrupt or misuse the service.</li>
+        <li>Be decent to the other players you share sessions with.</li>
+      </ul>
+
+      <h3>4. Intellectual property</h3>
+      <p>The app, its design and its content are owned by the Instant Munchkin team. <strong>Munchkin is a trademark of Steve Jackson Games.</strong> Instant Munchkin is an unofficial companion app and is not affiliated with, sponsored by, or endorsed by Steve Jackson Games. You'll still need an official Munchkin game to play.</p>
+
+      <h3>5. No warranty</h3>
+      <p>The app is provided "as is," without warranties of any kind. We can't promise it will be uninterrupted or error-free — though we work to keep it solid.</p>
+
+      <h3>6. Limitation of liability</h3>
+      <p>To the extent permitted by law, we aren't liable for indirect or incidental damages arising from your use of the app. (Including any arguments it fails to settle at the table.)</p>
+
+      <h3>7. Changes</h3>
+      <p>We may update these terms; continued use after changes means you accept the updated version.</p>
+
+      <h3>8. Contact</h3>
+      <p>Questions? Email <a href="mailto:hello@instantmunchkin.com">hello@instantmunchkin.com</a>.</p>
+      <p style="color: var(--ink-3); font-size: 0.9rem;">Last updated: <span class="doc-date">2026</span>.</p>
+    </div>
+  </section>
+
+  <script>
+    (function () {
+      var root = document.documentElement;
+      var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      /* ---- Theme toggle ---- */
+      document.getElementById('theme-toggle').addEventListener('click', function () {
+        var next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+        root.setAttribute('data-theme', next);
+        try { localStorage.setItem('im-theme', next); } catch (e) {}
+      });
+
+      /* ---- Subpage open / close ---- */
+      var pageMap = { faq: 'page-faq', privacy: 'page-privacy', terms: 'page-terms' };
+      var openId = null;
+      var lastTrigger = null;
+
+      function openPage(key, trigger) {
+        var el = document.getElementById(pageMap[key]);
+        if (!el || openId) return;
+        lastTrigger = trigger || null;
+        openId = el.id;
+        el.removeAttribute('hidden');
+        el.scrollTop = 0;
+        void el.offsetWidth;                  /* reflow so the transform animates */
+        el.classList.add('open');
+        root.classList.add('subpage-open');
+        var back = el.querySelector('.back-btn');
+        if (back) back.focus();
+      }
+
+      function closePage() {
+        if (!openId) return;
+        var el = document.getElementById(openId);
+        var trigger = lastTrigger;
+        openId = null;
+        el.classList.remove('open');
+        root.classList.remove('subpage-open');
+
+        var finish = function () {
+          el.setAttribute('hidden', '');
+          el.removeEventListener('transitionend', finish);
+        };
+        if (reduced) finish();
+        else {
+          el.addEventListener('transitionend', finish);
+          setTimeout(function () { if (!openId) finish(); }, 650);
+        }
+        if (trigger && trigger.focus) trigger.focus();
+      }
+
+      document.querySelectorAll('[data-page]').forEach(function (btn) {
+        btn.addEventListener('click', function () { openPage(btn.getAttribute('data-page'), btn); });
+      });
+      document.querySelectorAll('[data-close]').forEach(function (btn) {
+        btn.addEventListener('click', closePage);
+      });
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && openId) closePage();
+      });
+
+      /* ---- FAQ accordion ---- */
+      document.querySelectorAll('.faq-q').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          var panel = btn.nextElementSibling;
+          var open = btn.getAttribute('aria-expanded') === 'true';
+          btn.setAttribute('aria-expanded', open ? 'false' : 'true');
+          panel.style.maxHeight = open ? null : panel.scrollHeight + 'px';
+        });
+      });
+
+      /* ---- Year stamps ---- */
+      var y = new Date().getFullYear();
+      document.querySelectorAll('.doc-date').forEach(function (s) { s.textContent = y; });
+    })();
+  </script>
 </body>
 </html>
