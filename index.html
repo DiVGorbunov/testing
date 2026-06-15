@@ -235,6 +235,7 @@
       font-size: clamp(1rem, 0.92rem + 0.5vw, 1.25rem);
       color: var(--ink-2); margin-top: clamp(8px, 1.4vh, 16px); max-width: 30ch;
     }
+    .tagline-short { display: none; }   /* mobile-only copy, swapped in below */
 
     /* ---- Ornate green TRY NOW ---- */
     .btn-try {
@@ -246,12 +247,7 @@
       padding: clamp(13px, 1.8vh, 18px) clamp(34px, 5vw, 56px);
       border-radius: var(--r-md);
       border: 2px solid var(--gold-line);
-      background-image:
-        radial-gradient(circle at 11px 11px, #e6c061 0 2.4px, transparent 3px),
-        radial-gradient(circle at calc(100% - 11px) 11px, #e6c061 0 2.4px, transparent 3px),
-        radial-gradient(circle at 11px calc(100% - 11px), #e6c061 0 2.4px, transparent 3px),
-        radial-gradient(circle at calc(100% - 11px) calc(100% - 11px), #e6c061 0 2.4px, transparent 3px),
-        linear-gradient(180deg, var(--green), var(--green-2));
+      background-image: linear-gradient(180deg, var(--green), var(--green-2));
       text-shadow: 0 1px 1px rgba(20,30,10,0.5);
       box-shadow: var(--shadow-md), inset 0 1px 0 rgba(255,255,255,0.28), inset 0 -2px 6px rgba(20,30,10,0.3);
       transition: transform .18s ease, box-shadow .2s ease, filter .2s ease;
@@ -273,12 +269,7 @@
       border: 2px solid var(--gold-line);
       color: var(--leather-ink);
       min-width: 188px;
-      background-image:
-        radial-gradient(circle at 10px 10px, #d9b15a 0 2.2px, transparent 2.8px),
-        radial-gradient(circle at calc(100% - 10px) 10px, #d9b15a 0 2.2px, transparent 2.8px),
-        radial-gradient(circle at 10px calc(100% - 10px), #d9b15a 0 2.2px, transparent 2.8px),
-        radial-gradient(circle at calc(100% - 10px) calc(100% - 10px), #d9b15a 0 2.2px, transparent 2.8px),
-        linear-gradient(180deg, var(--leather), var(--leather-2));
+      background-image: linear-gradient(180deg, var(--leather), var(--leather-2));
       box-shadow: var(--shadow-sm), inset 0 1px 0 rgba(255,255,255,0.16), inset 0 -2px 5px rgba(20,12,4,0.3);
       transition: transform .18s ease, box-shadow .2s ease, filter .2s ease;
     }
@@ -448,30 +439,52 @@
        RESPONSIVE
        ============================================================ */
     @media (max-width: 900px) {
+      .home { isolation: isolate; }       /* one stacking context for the layering below */
       .home__inner {
+        position: relative; z-index: auto;
         display: flex; flex-direction: column; align-items: center; text-align: center;
-        gap: clamp(8px, 1.5vh, 16px);
+        gap: clamp(6px, 1.2vh, 14px);
       }
       .home__text { align-self: center; }
-      .home__cta { align-self: center; padding-top: clamp(10px, 1.6vh, 18px); order: 3; width: 100%; }
+      .home__visual { order: 2; flex: 1 1 auto; min-height: 0; display: grid; place-items: center; width: 100%; }
+      .phone { max-height: 100%; }
+
+      /* One continuous frosted backdrop behind BOTH the CTA and the footer links */
+      .home::before {
+        content: ""; position: absolute; left: 0; right: 0; bottom: 0; z-index: 3;
+        height: 38dvh; max-height: 340px; pointer-events: none;
+        background: color-mix(in srgb, var(--parchment) 46%, transparent);
+        backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+        -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 46px);
+        mask-image: linear-gradient(to bottom, transparent 0, #000 46px);
+      }
+
+      /* CTA floats over the bottom of the (now larger) phone */
+      .home__cta {
+        order: 3; position: absolute; left: 0; right: 0; bottom: 0; z-index: 10;
+        width: 100%; max-width: 392px; margin-inline: auto; padding-top: 0;
+        display: flex; flex-direction: column; align-items: stretch; gap: 12px;
+      }
+      .home__footer { position: relative; z-index: 6; }
       .home__cta .store-row, .home__cta .btn-try { justify-content: center; }
-      .home__cta .btn-try { display: flex; }
-      .home__visual { order: 2; flex: 1 1 auto; display: grid; place-items: center; width: 100%; }
-      .eyebrow { justify-content: center; }
-      .eyebrow-suffix { display: none; }
+      .home__cta .btn-try { display: flex; }   /* full-width flex item -> matches store row */
+      .eyebrow { display: none; }          /* hide the small top label on mobile */
+      .footer-diamond { display: none; }   /* hide the ✦ at the bottom on mobile */
       .tagline { margin-inline: auto; }
-      .store-row { justify-content: center; }
-      .phone { max-height: 42dvh; }
+      .tagline-full { display: none; }     /* swap to the shorter mobile copy */
+      .tagline-short { display: inline; }
+      .store-row { justify-content: center; margin-top: 0; }
+      /* footer links shrink to stay on one line on narrow screens */
+      .home__footer { flex-wrap: nowrap; gap: clamp(6px, 2.2vw, 16px); font-size: clamp(0.72rem, 0.32rem + 2.1vw, 0.95rem); }
+      .footer-link { font-size: inherit; white-space: nowrap; }
+      .footer-sep { font-size: inherit; }
     }
     @media (max-width: 560px) {
-      .store-row { flex-direction: column; align-items: stretch; width: 100%; max-width: 340px; margin-inline: auto; }
-      .badge-leather { min-width: 0; justify-content: center; }
-      .btn-try { width: 100%; max-width: 340px; }
-      .phone { max-height: 38dvh; }
-      .home__footer { gap: 12px; }
-    }
-    @media (max-height: 680px) and (max-width: 900px) {
-      .phone { max-height: 32dvh; }
+      .store-row { flex-direction: row; gap: 10px; }
+      .badge-leather { flex: 1 1 0; min-width: 0; justify-content: center; padding: 8px 10px; gap: 8px; }
+      .badge-leather svg { width: 18px; height: 20px; }
+      .badge-leather .bt small { font-size: 9px; }
+      .badge-leather .bt strong { font-size: 14px; }
     }
   </style>
 </head>
@@ -501,7 +514,7 @@
         <span class="eyebrow">Munchkin companion<span class="eyebrow-suffix"> · Android &amp; iOS</span></span>
         <h1 class="title">Instant<br>Munchkin</h1>
         <p class="subtitle">Companion App</p>
-        <p class="tagline">Instant start. Track levels, gear and combat — and share game progress with everyone at the table.</p>
+        <p class="tagline"><span class="tagline-full">Instant start. Track levels, gear and combat — and share game progress with everyone at the table.</span><span class="tagline-short">Instant start. Track game progress. Share with other players</span></p>
       </div>
 
       <div class="home__cta">
