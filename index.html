@@ -446,17 +446,20 @@
         gap: clamp(6px, 1.2vh, 14px);
       }
       .home__text { align-self: center; }
-      .home__visual { order: 2; flex: 1 1 auto; min-height: 0; display: grid; place-items: center; width: 100%; }
-      .phone { max-height: 100%; }
+      .home__visual { order: 2; flex: 1 1 auto; min-height: 0; position: relative; width: 100%; }
+      /* absolute centering makes max-height resolve reliably, so the phone fills
+         its slot without overflowing on short screens */
+      .phone { position: absolute; inset: 0; margin: auto; width: auto; height: auto; max-width: 100%; max-height: 100%; }
 
-      /* One continuous frosted backdrop behind BOTH the CTA and the footer links */
+      /* One continuous frosted backdrop behind BOTH the CTA and the footer links.
+         Fixed height tied to the bottom region so it ends just above TRY NOW. */
       .home::before {
         content: ""; position: absolute; left: 0; right: 0; bottom: 0; z-index: 3;
-        height: 38dvh; max-height: 340px; pointer-events: none;
+        height: 190px; pointer-events: none;
         background: color-mix(in srgb, var(--parchment) 46%, transparent);
-        backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
-        -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 46px);
-        mask-image: linear-gradient(to bottom, transparent 0, #000 46px);
+        backdrop-filter: blur(13px); -webkit-backdrop-filter: blur(13px);
+        -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 34px);
+        mask-image: linear-gradient(to bottom, transparent 0, #000 34px);
       }
 
       /* CTA floats over the bottom of the (now larger) phone */
