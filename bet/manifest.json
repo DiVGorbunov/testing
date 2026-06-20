@@ -1,0 +1,17 @@
+{
+  "name": "HighBet — Угадай счёт",
+  "short_name": "HighBet",
+  "description": "Социальная игра-предсказание счёта футбольных матчей для компании друзей.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#080B11",
+  "theme_color": "#080B11",
+  "lang": "ru",
+  "categories": ["sports", "games", "social"],
+  "icons": [
+    { "src": "icons/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" },
+    { "src": "icons/icon-maskable.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "maskable" }
+  ]
+}

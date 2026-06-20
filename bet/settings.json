@@ -1,0 +1,135 @@
+{
+  "app": {
+    "name": "HighBet",
+    "tagline": "Угадай счёт. Забери победу.",
+    "version": "1.0.0",
+    "currency": "очк."
+  },
+  "scoring": {
+    "exactScore": 5,
+    "goalDifference": 3,
+    "correctOutcome": 1,
+    "miss": 0,
+    "rules": [
+      { "points": 5, "label": "Точный счёт", "desc": "Угадал счёт матча полностью" },
+      { "points": 3, "label": "Разница мячей", "desc": "Угадал исход и разницу голов" },
+      { "points": 1, "label": "Исход матча", "desc": "Угадал победителя или ничью" },
+      { "points": 0, "label": "Мимо", "desc": "Не угадал ничего" }
+    ]
+  },
+  "leagues": [
+    { "id": "ucl", "name": "Лига Чемпионов", "short": "UCL", "emoji": "⭐", "color": "#1A2B6B" },
+    { "id": "epl", "name": "Premier League", "short": "EPL", "emoji": "🦁", "color": "#3D195B" },
+    { "id": "laliga", "name": "La Liga", "short": "LAL", "emoji": "🇪🇸", "color": "#E4002B" },
+    { "id": "seriea", "name": "Serie A", "short": "SEA", "emoji": "🇮🇹", "color": "#0A2240" },
+    { "id": "bundes", "name": "Bundesliga", "short": "BUN", "emoji": "🇩🇪", "color": "#D20515" }
+  ],
+  "teams": [
+    { "id": "ars", "name": "Arsenal", "short": "ARS", "color": "#EF0107", "color2": "#FFFFFF", "city": "Лондон" },
+    { "id": "che", "name": "Chelsea", "short": "CHE", "color": "#034694", "color2": "#FFFFFF", "city": "Лондон" },
+    { "id": "liv", "name": "Liverpool", "short": "LIV", "color": "#C8102E", "color2": "#FFFFFF", "city": "Ливерпуль" },
+    { "id": "mci", "name": "Man City", "short": "MCI", "color": "#6CABDD", "color2": "#1C2C5B", "city": "Манчестер" },
+    { "id": "mun", "name": "Man United", "short": "MUN", "color": "#DA291C", "color2": "#FBE122", "city": "Манчестер" },
+    { "id": "tot", "name": "Tottenham", "short": "TOT", "color": "#132257", "color2": "#FFFFFF", "city": "Лондон" },
+    { "id": "new", "name": "Newcastle", "short": "NEW", "color": "#241F20", "color2": "#FFFFFF", "city": "Ньюкасл" },
+    { "id": "rma", "name": "Real Madrid", "short": "RMA", "color": "#FEBE10", "color2": "#00529F", "city": "Мадрид" },
+    { "id": "bar", "name": "Barcelona", "short": "BAR", "color": "#A50044", "color2": "#004D98", "city": "Барселона" },
+    { "id": "atm", "name": "Atletico", "short": "ATM", "color": "#CB3524", "color2": "#272E61", "city": "Мадрид" },
+    { "id": "juv", "name": "Juventus", "short": "JUV", "color": "#1A1A1A", "color2": "#FFFFFF", "city": "Турин" },
+    { "id": "int", "name": "Inter", "short": "INT", "color": "#0068A8", "color2": "#1A1A1A", "city": "Милан" },
+    { "id": "mil", "name": "AC Milan", "short": "MIL", "color": "#FB090B", "color2": "#1A1A1A", "city": "Милан" },
+    { "id": "nap", "name": "Napoli", "short": "NAP", "color": "#12A0D7", "color2": "#FFFFFF", "city": "Неаполь" },
+    { "id": "bay", "name": "Bayern", "short": "BAY", "color": "#DC052D", "color2": "#0066B2", "city": "Мюнхен" },
+    { "id": "bvb", "name": "Dortmund", "short": "BVB", "color": "#FDE100", "color2": "#1A1A1A", "city": "Дортмунд" },
+    { "id": "psg", "name": "PSG", "short": "PSG", "color": "#004170", "color2": "#DA291C", "city": "Париж" }
+  ],
+  "fixtures": [
+    { "id": "f1", "leagueId": "ucl", "homeId": "rma", "awayId": "mci", "kickoff": "2026-06-20T22:00:00", "status": "live", "minute": 67, "score": { "home": 2, "away": 1 }, "venue": "Сантьяго Бернабеу" },
+    { "id": "f2", "leagueId": "epl", "homeId": "ars", "awayId": "liv", "kickoff": "2026-06-20T19:30:00", "status": "upcoming", "venue": "Эмирейтс" },
+    { "id": "f3", "leagueId": "epl", "homeId": "mun", "awayId": "che", "kickoff": "2026-06-20T17:00:00", "status": "upcoming", "venue": "Олд Траффорд" },
+    { "id": "f4", "leagueId": "laliga", "homeId": "bar", "awayId": "atm", "kickoff": "2026-06-21T21:00:00", "status": "upcoming", "venue": "Камп Ноу" },
+    { "id": "f5", "leagueId": "seriea", "homeId": "juv", "awayId": "int", "kickoff": "2026-06-21T19:45:00", "status": "upcoming", "venue": "Альянц Стэдиум" },
+    { "id": "f6", "leagueId": "bundes", "homeId": "bay", "awayId": "bvb", "kickoff": "2026-06-21T18:30:00", "status": "upcoming", "venue": "Альянц Арена" },
+    { "id": "f7", "leagueId": "ucl", "homeId": "psg", "awayId": "liv", "kickoff": "2026-06-22T22:00:00", "status": "upcoming", "venue": "Парк де Пренс" },
+    { "id": "f8", "leagueId": "seriea", "homeId": "mil", "awayId": "nap", "kickoff": "2026-06-22T20:00:00", "status": "upcoming", "venue": "Сан-Сиро" },
+    { "id": "f9", "leagueId": "epl", "homeId": "mci", "awayId": "tot", "kickoff": "2026-06-23T19:30:00", "status": "upcoming", "venue": "Этихад" },
+    { "id": "f10", "leagueId": "laliga", "homeId": "rma", "awayId": "bar", "kickoff": "2026-06-23T22:00:00", "status": "upcoming", "venue": "Сантьяго Бернабеу" },
+    { "id": "f11", "leagueId": "epl", "homeId": "new", "awayId": "ars", "kickoff": "2026-06-24T21:00:00", "status": "upcoming", "venue": "Сент-Джеймс Парк" }
+  ],
+  "players": ["Дима", "Артём", "Макс", "Лена", "Костя", "Игорь", "Соня", "Паша", "Влад", "Кирилл", "Настя", "Рома"],
+  "rooms": [
+    {
+      "id": "r1",
+      "code": "EL9K2A",
+      "title": "Битва у Димы дома",
+      "creator": "Дима",
+      "fixtureId": "f1",
+      "createdAt": "2026-06-20T20:30:00",
+      "participants": [
+        { "name": "Дима", "isCreator": true, "prediction": { "home": 2, "away": 1 } },
+        { "name": "Артём", "prediction": { "home": 1, "away": 1 } },
+        { "name": "Макс", "prediction": { "home": 3, "away": 0 } },
+        { "name": "Лена", "prediction": { "home": 2, "away": 2 } },
+        { "name": "Костя", "prediction": null }
+      ]
+    },
+    {
+      "id": "r2",
+      "code": "MX7P4B",
+      "title": "Дерби с пацанами",
+      "creator": "Игорь",
+      "fixtureId": "f2",
+      "createdAt": "2026-06-20T16:00:00",
+      "participants": [
+        { "name": "Игорь", "isCreator": true, "prediction": { "home": 2, "away": 0 } },
+        { "name": "Соня", "prediction": { "home": 1, "away": 2 } },
+        { "name": "Паша", "prediction": null },
+        { "name": "Влад", "prediction": null }
+      ]
+    }
+  ],
+  "history": [
+    {
+      "id": "h1",
+      "title": "Финал у Кости",
+      "fixtureId": "hist1",
+      "fixture": { "homeId": "rma", "awayId": "liv", "leagueId": "ucl", "kickoff": "2026-06-14T22:00:00", "venue": "Уэмбли" },
+      "finalScore": { "home": 3, "away": 1 },
+      "winner": "Макс",
+      "participants": [
+        { "name": "Макс", "prediction": { "home": 3, "away": 1 }, "points": 5 },
+        { "name": "Дима", "prediction": { "home": 2, "away": 0 }, "points": 1 },
+        { "name": "Костя", "prediction": { "home": 2, "away": 1 }, "points": 3 },
+        { "name": "Лена", "prediction": { "home": 1, "away": 1 }, "points": 0 }
+      ]
+    },
+    {
+      "id": "h2",
+      "title": "Вечер пятницы",
+      "fixtureId": "hist2",
+      "fixture": { "homeId": "bar", "awayId": "mun", "leagueId": "ucl", "kickoff": "2026-06-07T21:00:00", "venue": "Камп Ноу" },
+      "finalScore": { "home": 1, "away": 1 },
+      "winner": "Соня",
+      "participants": [
+        { "name": "Соня", "prediction": { "home": 1, "away": 1 }, "points": 5 },
+        { "name": "Артём", "prediction": { "home": 2, "away": 1 }, "points": 0 },
+        { "name": "Игорь", "prediction": { "home": 0, "away": 0 }, "points": 1 },
+        { "name": "Паша", "prediction": { "home": 1, "away": 2 }, "points": 0 }
+      ]
+    },
+    {
+      "id": "h3",
+      "title": "Дома у Артёма",
+      "fixtureId": "hist3",
+      "fixture": { "homeId": "bay", "awayId": "psg", "leagueId": "ucl", "kickoff": "2026-05-31T20:00:00", "venue": "Альянц Арена" },
+      "finalScore": { "home": 2, "away": 2 },
+      "winner": "Дима",
+      "participants": [
+        { "name": "Дима", "prediction": { "home": 2, "away": 2 }, "points": 5 },
+        { "name": "Влад", "prediction": { "home": 3, "away": 1 }, "points": 1 },
+        { "name": "Макс", "prediction": { "home": 1, "away": 0 }, "points": 0 },
+        { "name": "Настя", "prediction": { "home": 2, "away": 3 }, "points": 1 }
+      ]
+    }
+  ]
+}
