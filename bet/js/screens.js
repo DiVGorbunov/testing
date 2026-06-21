@@ -57,7 +57,7 @@
       ${topbar('', { right: `<a class="icon-btn" href="#/history" aria-label="История">${ui.icon('clock')}</a>` })}
       <section class="home-hero fade-up">
         <span class="ball">⚽</span>
-        <div class="brand"><div class="brand-mark">⚽</div><div class="brand-name">High<b>Bet</b></div></div>
+        <div class="brand"><div class="brand-mark">⚽</div><div class="brand-name">Score<b>Pick</b></div></div>
         <h2>Угадай счёт.<br>Забери победу.</h2>
         <p>${esc(d.app.tagline)} Собери друзей, выберите матч и поборитесь за точный прогноз.</p>
         <div class="mt-24"><button class="btn" data-action="create-game">${ui.icon('bolt', { size: 20 })} Создать игру</button></div>
