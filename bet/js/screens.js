@@ -55,6 +55,7 @@
     return {
       html: `
       ${topbar('', { right: `<button class="icon-btn" data-action="lang" aria-label="${esc(HB.i18n.t('lang.title'))}">${ui.icon('globe')}</button><a class="icon-btn" href="#/history" aria-label="${esc(HB.i18n.t('nav.history'))}">${ui.icon('clock')}</a>` })}
+      <div class="home-top">
       <section class="home-hero fade-up">
         <span class="ball">⚽</span>
         <div class="brand"><div class="brand-mark">⚽</div><div class="brand-name">Score<b>Pick</b></div></div>
@@ -63,6 +64,7 @@
         <div class="mt-24"><button class="btn" data-action="create-game">${ui.icon('bolt', { size: 20 })} ${HB.i18n.t('home.create')}</button></div>
       </section>
 
+      <div class="home-aside">
       ${liveHtml ? `<div class="mt-16 fade-up d1">${liveHtml}</div>` : ''}
 
       <div class="card glass mt-16 fade-up d1">
@@ -77,6 +79,8 @@
         <div class="stat"><div class="v green">${d.rooms.length}</div><div class="l">${HB.i18n.t('home.statGames')}</div></div>
         <div class="stat"><div class="v gold">${totalPlayers}</div><div class="l">${HB.i18n.t('home.statPlayers')}</div></div>
         <div class="stat"><div class="v">${d.fixtures.length}</div><div class="l">${HB.i18n.t('home.statMatches')}</div></div>
+      </div>
+      </div>
       </div>
 
       ${rooms.length ? `
@@ -351,6 +355,7 @@
       html: `
       ${topbar(room.title, { back: true, sub: HB.i18n.d(HB.league(fx.leagueId).name), right: `<button class="icon-btn" data-action="share-room" aria-label="${esc(HB.i18n.t('common.share'))}">${ui.icon('share')}</button>` })}
 
+      <div class="room-main">
       ${ui.heroFixture(fx, mid)}
 
       <div class="code-box mt-16 fade-up">
@@ -367,7 +372,9 @@
       ${!locked ? `<div class="mt-16 fade-up d1"><div class="row-between mb-8" style="padding:0 2px"><span class="muted" style="font-size:13px">${HB.i18n.t('room.progress')}</span><span class="muted tnum" style="font-size:13px">${readyCount}/${room.participants.length}</span></div><div class="prog"><i style="width:${Math.round(readyCount / room.participants.length * 100)}%"></i></div></div>` : ''}
 
       <div class="mt-16">${predictorHtml}</div>
+      </div>
 
+      <div class="room-side">
       <div class="section-title fade-up d2">
         <h2>${reveal ? HB.i18n.t('room.table') : HB.i18n.t('room.players')} · ${room.participants.length}</h2>
         ${isCreator ? `<button class="link" data-action="add-player">${HB.i18n.t('room.addPlayer')}</button>` : ''}
@@ -382,6 +389,7 @@
       ${fx.status === 'live' ? `<div class="mt-24 fade-up d3"><a class="btn btn-gold" href="#/results/${room.id}">${ui.icon('trophy', { size: 20 })} ${HB.i18n.t('room.liveBoard')}</a></div>` : ''}
       ${fx.status === 'finished' ? `<div class="mt-24 fade-up d3"><a class="btn btn-gold" href="#/results/${room.id}">${ui.icon('trophy', { size: 20 })} ${HB.i18n.t('room.seeResults')}</a></div>` : ''}
       ${fx.status === 'upcoming' ? `<div class="card glass mt-24 text-c fade-up d3"><span class="muted" style="font-size:13px">${ui.icon('lock', { size: 15 })} ${HB.i18n.t('room.lockHint')}</span></div>` : ''}
+      </div>
       `,
       onMount(view) {
         const room2 = HB.room(params.id);
@@ -525,13 +533,9 @@
 
     return `
       ${topbar(isFinal ? HB.i18n.t('results.title') : HB.i18n.t('results.liveTitle'), { back: true, sub: o.title, right: `<button class="icon-btn" data-action="share-results" data-text="${esc(o.shareText)}" aria-label="${esc(HB.i18n.t('common.share'))}">${ui.icon('share')}</button>` })}
+      <div class="res-main">
       ${ui.heroFixture(fx, mid)}
       <div class="mt-16">${winnerBlock}</div>
-
-      <div class="section-title fade-up d2"><h2>${isFinal ? HB.i18n.t('results.finalTable') : HB.i18n.t('results.leadingNow')}</h2><span class="dim" style="font-size:13px">${ranking.length} ${HB.i18n.plural(ranking.length, 'players')}</span></div>
-      <div class="plist fade-up d2">
-        ${ranking.map((r, i) => resultRow(r, i, actual)).join('')}
-      </div>
 
       <div class="card glass mt-24 fade-up d3">
         <div class="h-eyebrow mb-8">${HB.i18n.t('results.scoringTitle')}</div>
@@ -539,7 +543,16 @@
       </div>
 
       ${o.live ? `<div class="card glass mt-16 text-c fade-up d3"><span class="muted" style="font-size:13px">${ui.icon('flame', { size: 15 })} ${HB.i18n.t('results.liveHint')}</span></div>` : ''}
+      </div>
+
+      <div class="res-side">
+      <div class="section-title fade-up d2"><h2>${isFinal ? HB.i18n.t('results.finalTable') : HB.i18n.t('results.leadingNow')}</h2><span class="dim" style="font-size:13px">${ranking.length} ${HB.i18n.plural(ranking.length, 'players')}</span></div>
+      <div class="plist fade-up d2">
+        ${ranking.map((r, i) => resultRow(r, i, actual)).join('')}
+      </div>
+
       <div class="mt-16 fade-up d3"><a class="btn btn-ghost" href="${o.backTo}">${ui.icon('back', { size: 20 })} ${HB.i18n.t('results.backToRoom')}</a></div>
+      </div>
     `;
   }
 

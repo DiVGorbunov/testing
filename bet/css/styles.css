@@ -493,6 +493,11 @@ h1, h2, h3 { font-family: var(--display); font-weight: 700; letter-spacing: -0.0
 .fab-plus svg { width: 26px; height: 26px; }
 .tab-fab:active .fab-plus { transform: scale(0.88) rotate(90deg); }
 
+/* Элементы только для десктопной боковой панели — на мобайле скрыты */
+.side-brand, .fab-label, .side-lang { display: none; }
+/* Десктопные layout-обёртки на мобайле «прозрачны» (никак не влияют на поток) */
+.home-top, .home-aside, .room-main, .room-side, .res-main, .res-side { display: contents; }
+
 /* ---------- Toast ---------- */
 .toast-root { position: fixed; left: 0; right: 0; bottom: calc(var(--tab-h) + var(--safe-b) + 16px); z-index: 80; display: flex; flex-direction: column; align-items: center; gap: 8px; pointer-events: none; }
 .toast {
@@ -598,8 +603,8 @@ h1, h2, h3 { font-family: var(--display); font-weight: 700; letter-spacing: -0.0
   *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
 }
 
-/* desktop: phone frame feel */
-@media (min-width: 540px) {
+/* tablet: phone-frame feel (540–959px) */
+@media (min-width: 540px) and (max-width: 959px) {
   .app-shell {
     margin: 22px auto; min-height: calc(100dvh - 44px);
     border-radius: 34px; border: 1px solid var(--stroke);
@@ -609,4 +614,119 @@ h1, h2, h3 { font-family: var(--display); font-weight: 700; letter-spacing: -0.0
   .tabbar { position: absolute; }
   .view { min-height: calc(100dvh - 44px); }
   body { padding: 0; }
+}
+
+/* ============================================================
+   Desktop (≥960px): боковая навигация + широкий контент.
+   Сохраняем glassmorphism, палитру и анимации — меняем только
+   раскладку (мобильная разметка ниже этой точки не затрагивается).
+   ============================================================ */
+@media (min-width: 960px) {
+  body { padding: 0; }
+
+  /* ---- Каркас: сайдбар | контент ---- */
+  .app-shell {
+    max-width: 1240px; margin: 0 auto; min-height: 100dvh;
+    display: grid; grid-template-columns: 250px minmax(0, 1fr);
+    grid-template-areas: "nav main";
+    column-gap: 30px; padding: 0 32px; align-items: start;
+  }
+
+  /* ---- Сайдбар (преобразованный таббар) ---- */
+  .tabbar {
+    /* !important перебивает inline display:none, который app.js ставит на
+       экранах-флоу (создание/вход): на десктопе сайдбар нужен всегда. */
+    display: flex !important;
+    position: sticky; top: 0; bottom: auto; left: auto; transform: none;
+    grid-area: nav; width: auto; max-width: none;
+    height: 100dvh; padding: 26px 12px 24px;
+    flex-direction: column; align-items: stretch; justify-content: flex-start; gap: 4px;
+    background: transparent; backdrop-filter: none; -webkit-backdrop-filter: none;
+    border-top: 0; border-right: 1px solid var(--stroke);
+  }
+
+  .side-brand { display: flex; align-items: center; gap: 11px; padding: 4px 12px 22px; }
+  .side-brand .brand-mark { width: 40px; height: 40px; font-size: 22px; }
+  .side-brand .brand-name { font-size: 20px; }
+
+  /* пункты навигации — горизонтальные строки */
+  .tab {
+    flex: 0 0 auto; flex-direction: row; justify-content: flex-start; gap: 13px;
+    width: 100%; padding: 12px 14px; border-radius: 14px;
+    font-size: 15px; font-weight: 600; color: var(--text-2); order: 2;
+    transition: background 0.2s var(--ease), color 0.2s var(--ease);
+  }
+  .tab:hover { background: var(--surface); color: var(--text); }
+  .tab .tab-ic { opacity: 0.85; }
+  .tab .tab-ic svg { width: 22px; height: 22px; }
+  .tab .tab-label { font-size: 14.5px; }
+  .tab.active { background: rgba(0, 230, 118, 0.10); color: var(--primary); }
+  .tab.active .tab-ic { opacity: 1; }
+  .tab.active::before { display: none; }
+
+  /* «Создать игру» — полноширинная кнопка сразу под брендом */
+  .tab-fab { order: 1; width: 100%; margin: 0 0 14px; }
+  .tab-fab .fab-plus {
+    width: 100%; height: 52px; margin-top: 0; border-radius: 15px;
+    flex-direction: row; gap: 10px;
+  }
+  .tab-fab .fab-plus svg { width: 22px; height: 22px; }
+  .fab-label { display: inline; font-family: var(--display); font-weight: 700; font-size: 15px; }
+  .tab-fab:active .fab-plus { transform: scale(0.97) rotate(0deg); }
+
+  /* язык — внизу панели */
+  .side-lang {
+    order: 3; display: flex; align-items: center; gap: 13px; width: 100%;
+    padding: 12px 14px; margin-top: auto; border-radius: 14px;
+    color: var(--text-2); font-size: 14.5px; font-weight: 600;
+    transition: background 0.2s var(--ease), color 0.2s var(--ease);
+  }
+  .side-lang:hover { background: var(--surface); color: var(--text); }
+  .side-lang-ic { display: grid; place-items: center; }
+  .side-lang-ic svg { width: 22px; height: 22px; }
+
+  /* ---- Колонка контента ---- */
+  .view, .view.no-tab {
+    grid-area: main; min-height: 100dvh; padding: 30px 4px 64px;
+    animation: viewIn 0.4s var(--ease);
+  }
+  .topbar h1 { font-size: 26px; }
+  .view-home .topbar { display: none; }   /* на десктопе бренд/навигация уже в сайдбаре */
+
+  /* формы-флоу (создание/вход) — комфортная ширина по центру, не на всю колонку */
+  .view-create, .view-join { max-width: 680px; margin-inline: auto; }
+
+  /* списки карточек → 2 колонки */
+  .view-fixtures #fx-list .stack,
+  .view-rooms .stack,
+  .view-history .stack,
+  .view-home .stack {
+    display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px;
+  }
+  .view-fixtures #fx-list .stack > * + *,
+  .view-rooms .stack > * + *,
+  .view-history .stack > * + *,
+  .view-home .stack > * + * { margin-top: 0; }
+
+  /* ---- Главная: герой | (код + статистика) ---- */
+  .home-top { display: grid; grid-template-columns: 1.3fr 0.9fr; gap: 22px; align-items: start; }
+  .home-aside { display: flex; flex-direction: column; }
+  .home-aside > * { margin-top: 0 !important; }
+  .home-aside > * + * { margin-top: 16px !important; }
+
+  /* ---- Комната / Результаты: основная колонка | боковая ---- */
+  .view-room, .view-results, .view-recap {
+    display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    column-gap: 26px; align-items: start;
+  }
+  .view-room > .topbar, .view-results > .topbar, .view-recap > .topbar { grid-column: 1 / -1; }
+  .room-main, .res-main { display: block; grid-column: 1; }
+  .room-side, .res-side { display: block; grid-column: 2; }
+
+  /* ---- Тосты — снизу справа ---- */
+  .toast-root { left: auto; right: 26px; bottom: 26px; align-items: flex-end; }
+
+  /* ---- Шторка → центрированное модальное окно ---- */
+  .sheet-overlay { align-items: center; }
+  .sheet { border-radius: 24px; border-bottom: 1px solid var(--stroke-2); max-height: 84dvh; }
 }

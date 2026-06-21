@@ -45,7 +45,7 @@
 
     view.classList.remove('view');
     void view.offsetWidth;          // перезапуск анимации входа
-    view.className = 'view' + (FLOW[route.name] ? ' no-tab' : '');
+    view.className = 'view view-' + route.name + (FLOW[route.name] ? ' no-tab' : '');
     view.innerHTML = screen.html;
     if (screen.onMount) screen.onMount(view);
 

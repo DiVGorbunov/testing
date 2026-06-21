@@ -357,7 +357,7 @@
       const meta = document.querySelector('meta[name="description"]');
       if (meta) meta.setAttribute('content', this.t('doc.desc'));
 
-      // нижняя навигация
+      // навигация (нижний таббар на мобайле / боковая панель на десктопе)
       const tabbar = document.getElementById('tabbar');
       if (tabbar) {
         tabbar.setAttribute('aria-label', this.t('nav.aria'));
@@ -366,7 +366,17 @@
           if (lbl) lbl.textContent = this.t('nav.' + tab.dataset.tab);
         });
         const fab = tabbar.querySelector('.tab-fab');
-        if (fab) fab.setAttribute('aria-label', this.t('nav.create'));
+        if (fab) {
+          fab.setAttribute('aria-label', this.t('nav.create'));
+          const fabLbl = fab.querySelector('.fab-label');
+          if (fabLbl) fabLbl.textContent = this.t('nav.create');
+        }
+        const langBtn = tabbar.querySelector('.side-lang');
+        if (langBtn) {
+          langBtn.setAttribute('aria-label', this.t('lang.title'));
+          const langLbl = langBtn.querySelector('.side-lang-label');
+          if (langLbl) langLbl.textContent = this.t('lang.title');
+        }
       }
 
       // экран загрузки (если ещё виден)
