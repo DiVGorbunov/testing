@@ -5,6 +5,7 @@
   'use strict';
   const HB = (window.HB = window.HB || {});
   const ui = HB.ui;
+  const esc = (s) => String(s == null ? '' : s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 
   const view = document.getElementById('view');
   const tabbar = document.getElementById('tabbar');
@@ -39,7 +40,7 @@
       screen = factory(route.params);
     } catch (err) {
       console.error(err);
-      screen = { html: `<div class="empty"><div class="e-ic">⚠️</div><h3>Что-то пошло не так</h3><p>${String(err.message || err)}</p><a class="btn" href="#/home" style="max-width:220px;margin:0 auto">На главную</a></div>` };
+      screen = { html: `<div class="empty"><div class="e-ic">⚠️</div><h3>${HB.i18n.t('boot.errorTitle')}</h3><p>${esc(String(err.message || err))}</p><a class="btn" href="#/home" style="max-width:220px;margin:0 auto">${HB.i18n.t('boot.toHome')}</a></div>` };
     }
 
     view.classList.remove('view');
@@ -74,6 +75,9 @@
       case 'quick-create':
         e.preventDefault(); location.hash = '#/fixtures'; break;
 
+      case 'lang':
+        e.preventDefault(); openLangPicker(); break;
+
       case 'join-code': {
         const inp = document.getElementById('home-code');
         tryJoinByCode(inp ? inp.value : ''); break;
@@ -91,12 +95,12 @@
         const room = HB.room(router.current.params.id);
         if (room) {
           const url = location.origin + location.pathname + '#/join';
-          ui.share({ title: 'ScorePick', text: `Заходи в игру «${room.title}» — код ${room.code}`, url });
+          ui.share({ title: 'ScorePick', text: HB.i18n.t('share.invite', { title: room.title, code: room.code }), url });
         }
         break;
       }
       case 'share-results': {
-        ui.share({ title: 'ScorePick', text: (t.dataset.text || 'Результаты в ScorePick') + ' ⚽🏆', url: location.href });
+        ui.share({ title: 'ScorePick', text: (t.dataset.text || HB.i18n.t('share.resultsFallback')) + ' ⚽🏆', url: location.href });
         break;
       }
       case 'add-player': openAddPlayer(); break;
@@ -107,11 +111,29 @@
 
   function tryJoinByCode(code) {
     code = String(code || '').toUpperCase().trim();
-    if (code.length !== 6) { ui.toast('Введи код из 6 символов', 'err'); return; }
+    if (code.length !== 6) { ui.toast(HB.i18n.t('err.codeLen'), 'err'); return; }
     const room = HB.roomByCode(code);
-    if (!room) { ui.toast('Комната не найдена', 'err'); return; }
+    if (!room) { ui.toast(HB.i18n.t('err.roomNotFound'), 'err'); return; }
     HB.session.pendingCode = code; HB.saveSession();
     location.hash = '#/join';
+  }
+
+  // ---------- Шторка: выбор языка ----------
+  function openLangPicker() {
+    const cur = HB.i18n.lang;
+    const opts = HB.i18n.available.map((l) => `
+      <button class="lang-opt ${l.code === cur ? 'active' : ''}" data-lang="${l.code}">
+        <span class="lang-flag" aria-hidden="true">${l.flag}</span>
+        <span class="lang-name">${l.native}</span>
+        ${l.code === cur ? `<span class="lang-check">${ui.icon('check', { size: 20 })}</span>` : ''}
+      </button>`).join('');
+    ui.sheet(`
+      <h3>${HB.i18n.t('lang.title')}</h3>
+      <p class="muted mb-16" style="font-size:13.5px">${HB.i18n.t('lang.subtitle')}</p>
+      <div class="lang-list">${opts}</div>
+    `);
+    const root = document.getElementById('sheet-root');
+    root.querySelectorAll('[data-lang]').forEach((b) => b.addEventListener('click', () => HB.i18n.set(b.dataset.lang)));
   }
 
   // ---------- Шторка: добавить игрока (хост) ----------
@@ -120,20 +142,20 @@
     if (!room) return;
     const suggestions = HB.data.players.filter((n) => !room.participants.some((p) => p.name.toLowerCase() === n.toLowerCase())).slice(0, 6);
     ui.sheet(`
-      <h3>Добавить игрока</h3>
-      <p class="muted mb-16" style="font-size:13.5px">Добавь друга вручную — он сможет сделать прогноз</p>
-      <div class="field"><div class="input-icon">${ui.icon('user', { size: 20 })}<input class="input" id="ap-name" maxlength="20" placeholder="Имя игрока" /></div></div>
-      ${suggestions.length ? `<div class="dim mb-8" style="font-size:12px">Быстрый выбор</div><div class="chips" style="flex-wrap:wrap;overflow:visible">${suggestions.map((n) => `<button class="chip" data-suggest="${n}">${n}</button>`).join('')}</div>` : ''}
-      <button class="btn mt-16" id="ap-add">${ui.icon('plus', { size: 20 })} Добавить в комнату</button>
+      <h3>${HB.i18n.t('sheet.addTitle')}</h3>
+      <p class="muted mb-16" style="font-size:13.5px">${HB.i18n.t('sheet.addText')}</p>
+      <div class="field"><div class="input-icon">${ui.icon('user', { size: 20 })}<input class="input" id="ap-name" maxlength="20" placeholder="${esc(HB.i18n.t('sheet.playerName'))}" /></div></div>
+      ${suggestions.length ? `<div class="dim mb-8" style="font-size:12px">${HB.i18n.t('sheet.quickPick')}</div><div class="chips" style="flex-wrap:wrap;overflow:visible">${suggestions.map((n) => `<button class="chip" data-suggest="${esc(n)}">${esc(n)}</button>`).join('')}</div>` : ''}
+      <button class="btn mt-16" id="ap-add">${ui.icon('plus', { size: 20 })} ${HB.i18n.t('sheet.addToRoom')}</button>
     `);
     const root = document.getElementById('sheet-root');
     const input = root.querySelector('#ap-name');
     root.querySelectorAll('[data-suggest]').forEach((b) => b.addEventListener('click', () => { input.value = b.dataset.suggest; }));
     root.querySelector('#ap-add').addEventListener('click', () => {
       const nm = input.value.trim();
-      if (!nm) { ui.toast('Введи имя', 'err'); return; }
-      if (HB.addParticipant(room, nm)) { ui.closeSheet(); ui.toast(nm + ' в игре', 'ok'); HB.router.render(); }
-      else ui.toast('Такой игрок уже есть', 'err');
+      if (!nm) { ui.toast(HB.i18n.t('sheet.enterName'), 'err'); return; }
+      if (HB.addParticipant(room, nm)) { ui.closeSheet(); ui.toast(HB.i18n.t('sheet.addedToGame', { name: nm }), 'ok'); HB.router.render(); }
+      else ui.toast(HB.i18n.t('sheet.existing'), 'err');
     });
   }
 
@@ -142,17 +164,17 @@
     const room = HB.room(router.current.params.id);
     if (!room) return;
     ui.sheet(`
-      <h3>Сыграть в этой комнате</h3>
-      <p class="muted mb-16" style="font-size:13.5px">Введи имя — и делай прогноз на матч</p>
-      <div class="field"><div class="input-icon">${ui.icon('user', { size: 20 })}<input class="input" id="jh-name" maxlength="20" placeholder="Как тебя зовут?" value="${HB.session.me || ''}" /></div></div>
-      <button class="btn" id="jh-add">${ui.icon('check', { size: 20 })} Присоединиться</button>
+      <h3>${HB.i18n.t('sheet.joinTitle')}</h3>
+      <p class="muted mb-16" style="font-size:13.5px">${HB.i18n.t('sheet.joinText')}</p>
+      <div class="field"><div class="input-icon">${ui.icon('user', { size: 20 })}<input class="input" id="jh-name" maxlength="20" placeholder="${esc(HB.i18n.t('sheet.joinAsk'))}" value="${esc(HB.session.me || '')}" /></div></div>
+      <button class="btn" id="jh-add">${ui.icon('check', { size: 20 })} ${HB.i18n.t('sheet.joinBtn')}</button>
     `);
     const root = document.getElementById('sheet-root');
     root.querySelector('#jh-add').addEventListener('click', () => {
       const nm = root.querySelector('#jh-name').value.trim();
-      if (!nm) { ui.toast('Введи имя', 'err'); return; }
+      if (!nm) { ui.toast(HB.i18n.t('sheet.enterName'), 'err'); return; }
       HB.joinRoom(room, nm);
-      ui.closeSheet(); ui.toast('Ты в игре! 🎉', 'ok'); HB.router.render();
+      ui.closeSheet(); ui.toast(HB.i18n.t('join.joined'), 'ok'); HB.router.render();
     });
   }
 
@@ -160,6 +182,7 @@
   window.addEventListener('hashchange', () => { ui.closeSheet(); router.render(); });
 
   async function start() {
+    HB.i18n.init();   // выбрать язык и локализовать статический каркас (до загрузки данных)
     try {
       await HB.load();
       router.render();
@@ -170,9 +193,10 @@
       boot.classList.add('error');
       document.querySelector('.boot-ball').textContent = '⚠️';
       const isFile = location.protocol === 'file:';
+      bootMsg.dataset.locked = '1';   // не перезаписывать применением языка
       bootMsg.innerHTML = isFile
-        ? `Не удалось загрузить <code>settings.json</code> — браузер блокирует чтение файлов с диска.<br><br>Запусти локальный сервер в папке проекта:<br><br><code>python -m http.server 8080</code><br>и открой <code>http://localhost:8080</code>`
-        : `Не удалось загрузить данные: ${String(err.message || err)}<br><br>Проверь, что рядом лежит <code>settings.json</code>.`;
+        ? HB.i18n.t('boot.fileError')
+        : HB.i18n.t('boot.loadError', { msg: esc(String(err.message || err)) });
     }
   }
 

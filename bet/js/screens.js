@@ -18,7 +18,7 @@
   function topbar(title, opts) {
     opts = opts || {};
     const left = opts.back
-      ? `<button class="icon-btn" data-action="back" aria-label="Назад">${ui.icon('back')}</button>`
+      ? `<button class="icon-btn" data-action="back" aria-label="${esc(HB.i18n.t('common.back'))}">${ui.icon('back')}</button>`
       : `<div class="brand"><div class="brand-mark">⚽</div></div>`;
     const right = opts.right || '';
     return `<header class="topbar">
@@ -46,46 +46,46 @@
     if (live.length) {
       const fx = live[0]; const h = HB.team(fx.homeId), a = HB.team(fx.awayId);
       liveHtml = `<a class="live-strip card-tap" href="#/fixtures">
-        <span class="badge badge-live"><span class="dot"></span>LIVE</span>
-        <span class="ls-txt">Сейчас идёт <b>${esc(h.name)} ${fx.score.home}:${fx.score.away} ${esc(a.name)}</b> · ${fx.minute}'</span>
+        <span class="badge badge-live"><span class="dot"></span>${HB.i18n.t('badge.live')}</span>
+        <span class="ls-txt">${HB.i18n.t('home.liveNow')} <b>${esc(h.name)} ${fx.score.home}:${fx.score.away} ${esc(a.name)}</b> · ${fx.minute}'</span>
         ${ui.icon('chev', { size: 18 })}
       </a>`;
     }
 
     return {
       html: `
-      ${topbar('', { right: `<a class="icon-btn" href="#/history" aria-label="История">${ui.icon('clock')}</a>` })}
+      ${topbar('', { right: `<button class="icon-btn" data-action="lang" aria-label="${esc(HB.i18n.t('lang.title'))}">${ui.icon('globe')}</button><a class="icon-btn" href="#/history" aria-label="${esc(HB.i18n.t('nav.history'))}">${ui.icon('clock')}</a>` })}
       <section class="home-hero fade-up">
         <span class="ball">⚽</span>
         <div class="brand"><div class="brand-mark">⚽</div><div class="brand-name">Score<b>Pick</b></div></div>
-        <h2>Угадай счёт.<br>Забери победу.</h2>
-        <p>${esc(d.app.tagline)} Собери друзей, выберите матч и поборитесь за точный прогноз.</p>
-        <div class="mt-24"><button class="btn" data-action="create-game">${ui.icon('bolt', { size: 20 })} Создать игру</button></div>
+        <h2>${HB.i18n.t('home.headline')}</h2>
+        <p>${esc(HB.i18n.d(d.app.tagline))} ${HB.i18n.t('home.intro')}</p>
+        <div class="mt-24"><button class="btn" data-action="create-game">${ui.icon('bolt', { size: 20 })} ${HB.i18n.t('home.create')}</button></div>
       </section>
 
       ${liveHtml ? `<div class="mt-16 fade-up d1">${liveHtml}</div>` : ''}
 
       <div class="card glass mt-16 fade-up d1">
-        <label style="display:block;font-size:13px;font-weight:600;color:var(--text-2);margin:0 2px 9px">Войти по коду комнаты</label>
+        <label style="display:block;font-size:13px;font-weight:600;color:var(--text-2);margin:0 2px 9px">${HB.i18n.t('home.enterCode')}</label>
         <div class="row">
           <input class="input input-code" id="home-code" inputmode="text" autocomplete="off" maxlength="6" placeholder="• • • • • •" />
         </div>
-        <button class="btn btn-ghost mt-16" data-action="join-code">${ui.icon('arrowr', { size: 20 })} Присоединиться</button>
+        <button class="btn btn-ghost mt-16" data-action="join-code">${ui.icon('arrowr', { size: 20 })} ${HB.i18n.t('common.join')}</button>
       </div>
 
       <div class="stat-grid mt-24 fade-up d2">
-        <div class="stat"><div class="v green">${d.rooms.length}</div><div class="l">Активных игр</div></div>
-        <div class="stat"><div class="v gold">${totalPlayers}</div><div class="l">Игроков</div></div>
-        <div class="stat"><div class="v">${d.fixtures.length}</div><div class="l">Матчей</div></div>
+        <div class="stat"><div class="v green">${d.rooms.length}</div><div class="l">${HB.i18n.t('home.statGames')}</div></div>
+        <div class="stat"><div class="v gold">${totalPlayers}</div><div class="l">${HB.i18n.t('home.statPlayers')}</div></div>
+        <div class="stat"><div class="v">${d.fixtures.length}</div><div class="l">${HB.i18n.t('home.statMatches')}</div></div>
       </div>
 
       ${rooms.length ? `
-      <div class="section-title fade-up d2"><h2>Твои комнаты</h2><a class="link" href="#/rooms">Все</a></div>
+      <div class="section-title fade-up d2"><h2>${HB.i18n.t('home.yourRooms')}</h2><a class="link" href="#/rooms">${HB.i18n.t('home.seeAll')}</a></div>
       <div class="stack">
         ${rooms.map((r) => roomCard(r)).join('')}
       </div>` : ''}
 
-      <div class="section-title fade-up d3"><h2>Ближайшие матчи</h2><a class="link" href="#/fixtures">Все матчи</a></div>
+      <div class="section-title fade-up d3"><h2>${HB.i18n.t('home.upcoming')}</h2><a class="link" href="#/fixtures">${HB.i18n.t('home.allMatches')}</a></div>
       <div class="stack fade-up d3">
         ${upcoming.map((fx) => `<a class="card card-tap" href="#/fixtures">${ui.fixtureRow(fx)}</a>`).join('')}
       </div>
@@ -123,7 +123,7 @@
 
   S.fixtures = function () {
     const days = [...new Set(HB.data.fixtures.filter((f) => f.status !== 'finished').map((f) => HB.dayKey(f.kickoff)))];
-    const dayChips = [{ k: 'all', label: 'Все' }, { k: 'live', label: '🔴 Live' }]
+    const dayChips = [{ k: 'all', label: HB.i18n.t('common.all') }, { k: 'live', label: HB.i18n.t('fixtures.live') }]
       .concat(days.map((k) => {
         const fx = HB.data.fixtures.find((f) => HB.dayKey(f.kickoff) === k);
         return { k, label: HB.fmtDay(fx.kickoff) };
@@ -131,13 +131,13 @@
 
     return {
       html: `
-      ${topbar('Выбор матча', { back: true, sub: 'Выбери матч для игры' })}
-      <div class="input-icon mb-16">${ui.icon('search', { size: 20 })}<input class="input" id="fx-search" placeholder="Поиск команды или города…" value="${esc(fxFilter.q)}" /></div>
+      ${topbar(HB.i18n.t('fixtures.title'), { back: true, sub: HB.i18n.t('fixtures.sub') })}
+      <div class="input-icon mb-16">${ui.icon('search', { size: 20 })}<input class="input" id="fx-search" placeholder="${esc(HB.i18n.t('fixtures.search'))}" value="${esc(fxFilter.q)}" /></div>
       <div class="chips" id="fx-days">
         ${dayChips.map((c) => `<button class="chip ${fxFilter.day === c.k ? 'active' : ''}" data-day="${c.k}">${c.label}</button>`).join('')}
       </div>
       <div class="chips" id="fx-leagues">
-        <button class="chip ${fxFilter.league === 'all' ? 'active' : ''}" data-league="all">Все лиги</button>
+        <button class="chip ${fxFilter.league === 'all' ? 'active' : ''}" data-league="all">${HB.i18n.t('common.allLeagues')}</button>
         ${HB.data.leagues.map((l) => `<button class="chip ${fxFilter.league === l.id ? 'active' : ''}" data-league="${l.id}"><span class="chip-emoji">${l.emoji}</span> ${esc(l.short)}</button>`).join('')}
       </div>
       <div id="fx-list" class="mt-16"></div>
@@ -163,16 +163,16 @@
         function renderList() {
           const list = matches();
           if (!list.length) {
-            listEl.innerHTML = `<div class="empty"><div class="e-ic">🔎</div><h3>Ничего не нашлось</h3><p>Попробуй изменить фильтры или поиск.</p></div>`;
+            listEl.innerHTML = `<div class="empty"><div class="e-ic">🔎</div><h3>${HB.i18n.t('fixtures.emptyTitle')}</h3><p>${HB.i18n.t('fixtures.emptyText')}</p></div>`;
             return;
           }
           // группировка по дням
           const groups = {};
           list.forEach((f) => { const k = HB.dayKey(f.kickoff); (groups[k] = groups[k] || []).push(f); });
           listEl.innerHTML = Object.keys(groups).map((k) => `
-            <div class="section-title" style="margin-top:18px"><h2>${HB.fmtDay(groups[k][0].kickoff)}</h2><span class="dim" style="font-size:13px">${groups[k].length} матч.</span></div>
+            <div class="section-title" style="margin-top:18px"><h2>${HB.fmtDay(groups[k][0].kickoff)}</h2><span class="dim" style="font-size:13px">${groups[k].length} ${HB.i18n.plural(groups[k].length, 'matches')}</span></div>
             <div class="stack">
-              ${groups[k].map((fx) => `<button class="card card-tap" style="text-align:left;width:100%" data-pick="${fx.id}">${ui.fixtureRow(fx)}<div class="row-between mt-16"><span class="dim" style="font-size:12.5px">${ui.icon('pin', { size: 13 })} ${esc(fx.venue)}</span><span class="badge badge-gold">Выбрать ${ui.icon('arrowr', { size: 13 })}</span></div></button>`).join('')}
+              ${groups[k].map((fx) => `<button class="card card-tap" style="text-align:left;width:100%" data-pick="${fx.id}">${ui.fixtureRow(fx)}<div class="row-between mt-16"><span class="dim" style="font-size:12.5px">${ui.icon('pin', { size: 13 })} ${esc(HB.i18n.d(fx.venue))}</span><span class="badge badge-gold">${HB.i18n.t('fixtures.pick')} ${ui.icon('arrowr', { size: 13 })}</span></div></button>`).join('')}
             </div>`).join('');
         }
 
@@ -205,44 +205,43 @@
      ============================================================ */
   S.create = function () {
     const fx = HB.fixture(HB.session.draftFixtureId);
-    if (!fx) return { html: redirectNote('Сначала выбери матч', '#/fixtures', 'Выбрать матч') };
+    if (!fx) return { html: redirectNote(HB.i18n.t('redirect.pickFirst'), '#/fixtures', HB.i18n.t('redirect.pickMatch')) };
+    const namePh = HB.i18n.t('create.namePlaceholder', { home: HB.team(fx.homeId).name, away: HB.team(fx.awayId).name });
 
     return {
       html: `
-      ${topbar('Новая игра', { back: true, sub: 'Настрой комнату' })}
-      <div class="card fade-up">${ui.fixtureRow(fx)}<div class="fixture-meta"><span class="mi">${ui.icon('pin', { size: 14 })} ${esc(fx.venue)}</span><span class="mi">${ui.icon('cal', { size: 14 })} ${HB.fmtDay(fx.kickoff)}, ${HB.fmtTime(fx.kickoff)}</span></div></div>
+      ${topbar(HB.i18n.t('create.title'), { back: true, sub: HB.i18n.t('create.sub') })}
+      <div class="card fade-up">${ui.fixtureRow(fx)}<div class="fixture-meta"><span class="mi">${ui.icon('pin', { size: 14 })} ${esc(HB.i18n.d(fx.venue))}</span><span class="mi">${ui.icon('cal', { size: 14 })} ${HB.fmtDay(fx.kickoff)}, ${HB.fmtTime(fx.kickoff)}</span></div></div>
 
       <div class="card mt-16 fade-up d1">
         <div class="field">
-          <label>Название комнаты</label>
-          <input class="input" id="cr-title" maxlength="40" placeholder="Напр. «Финал у Димы»" value="" />
+          <label>${HB.i18n.t('create.roomName')}</label>
+          <input class="input" id="cr-title" maxlength="40" placeholder="${esc(namePh)}" value="" />
         </div>
         <div class="field" style="margin-bottom:4px">
-          <label>Твоё имя (создатель)</label>
-          <div class="input-icon">${ui.icon('user', { size: 20 })}<input class="input" id="cr-name" maxlength="20" placeholder="Как тебя зовут?" value="${esc(HB.session.me || '')}" /></div>
+          <label>${HB.i18n.t('create.yourNameCreator')}</label>
+          <div class="input-icon">${ui.icon('user', { size: 20 })}<input class="input" id="cr-name" maxlength="20" placeholder="${esc(HB.i18n.t('create.yourNameAsk'))}" value="${esc(HB.session.me || '')}" /></div>
         </div>
       </div>
 
       <div class="card glass mt-16 fade-up d2">
         <div class="row" style="align-items:flex-start;gap:10px">
           <span style="color:var(--gold)">${ui.icon('info', { size: 20 })}</span>
-          <div class="muted" style="font-size:13px;line-height:1.5">После создания ты получишь <b style="color:var(--text)">код комнаты</b> — отправь его друзьям, чтобы они присоединились и сделали прогнозы.</div>
+          <div class="muted" style="font-size:13px;line-height:1.5">${HB.i18n.t('create.info')}</div>
         </div>
       </div>
 
-      <div class="mt-24 fade-up d3"><button class="btn" id="cr-submit">${ui.icon('check', { size: 20 })} Создать комнату</button></div>
+      <div class="mt-24 fade-up d3"><button class="btn" id="cr-submit">${ui.icon('check', { size: 20 })} ${HB.i18n.t('create.submit')}</button></div>
       `,
       onMount(view) {
         const title = view.querySelector('#cr-title');
         const name = view.querySelector('#cr-name');
-        // умное предзаполнение названия
-        title.placeholder = `Напр. «${HB.team(fx.homeId).name} – ${HB.team(fx.awayId).name}»`;
         view.querySelector('#cr-submit').addEventListener('click', () => {
           const nm = name.value.trim();
-          if (!nm) { ui.toast('Введи своё имя', 'err'); name.focus(); return; }
+          if (!nm) { ui.toast(HB.i18n.t('create.errName'), 'err'); name.focus(); return; }
           const room = HB.createRoom({ title: title.value.trim() || (HB.team(fx.homeId).short + ' – ' + HB.team(fx.awayId).short), creator: nm, fixtureId: fx.id });
           HB.session.draftFixtureId = null; HB.saveSession();
-          ui.toast('Комната создана 🎉', 'ok');
+          ui.toast(HB.i18n.t('create.created'), 'ok');
           go('#/room/' + room.id);
         });
       }
@@ -256,21 +255,21 @@
     const preset = HB.session.pendingCode || '';
     return {
       html: `
-      ${topbar('Вход в игру', { back: true, sub: 'Введи код приглашения' })}
+      ${topbar(HB.i18n.t('join.title'), { back: true, sub: HB.i18n.t('join.sub') })}
       <div class="card fade-up text-c">
         <div style="font-size:46px;margin:6px 0 4px">🎟️</div>
-        <h3 style="font-family:var(--display);font-size:18px">Код комнаты</h3>
-        <p class="muted" style="font-size:13.5px;margin:6px auto 16px;max-width:26ch">Спроси код у того, кто создал игру</p>
+        <h3 style="font-family:var(--display);font-size:18px">${HB.i18n.t('join.codeTitle')}</h3>
+        <p class="muted" style="font-size:13.5px;margin:6px auto 16px;max-width:26ch">${HB.i18n.t('join.codeHint')}</p>
         <input class="input input-code" id="jn-code" inputmode="text" autocomplete="off" maxlength="6" placeholder="• • • • • •" value="${esc(preset)}" />
       </div>
       <div id="jn-preview" class="mt-16"></div>
       <div class="card mt-16 fade-up d1" id="jn-namebox" style="display:none">
         <div class="field" style="margin-bottom:4px">
-          <label>Твоё имя</label>
-          <div class="input-icon">${ui.icon('user', { size: 20 })}<input class="input" id="jn-name" maxlength="20" placeholder="Как тебя зовут?" value="${esc(HB.session.me || '')}" /></div>
+          <label>${HB.i18n.t('join.yourName')}</label>
+          <div class="input-icon">${ui.icon('user', { size: 20 })}<input class="input" id="jn-name" maxlength="20" placeholder="${esc(HB.i18n.t('create.yourNameAsk'))}" value="${esc(HB.session.me || '')}" /></div>
         </div>
       </div>
-      <div class="mt-24 fade-up d2"><button class="btn" id="jn-submit" disabled>${ui.icon('arrowr', { size: 20 })} Присоединиться</button></div>
+      <div class="mt-24 fade-up d2"><button class="btn" id="jn-submit" disabled>${ui.icon('arrowr', { size: 20 })} ${HB.i18n.t('common.join')}</button></div>
       `,
       onMount(view) {
         const code = view.querySelector('#jn-code');
@@ -283,12 +282,12 @@
           code.value = code.value.toUpperCase().replace(/[^A-Z0-9]/g, '');
           room = code.value.length === 6 ? HB.roomByCode(code.value) : null;
           if (code.value.length === 6 && !room) {
-            preview.innerHTML = `<div class="card glass text-c" style="border-color:rgba(255,45,85,.35)"><span class="muted">Комната с кодом <b style="color:var(--live)">${esc(code.value)}</b> не найдена</span></div>`;
+            preview.innerHTML = `<div class="card glass text-c" style="border-color:rgba(255,45,85,.35)"><span class="muted">${HB.i18n.t('join.notFound', { code: esc(code.value) })}</span></div>`;
             nameBox.style.display = 'none'; submit.disabled = true; return;
           }
           if (!room) { preview.innerHTML = ''; nameBox.style.display = 'none'; submit.disabled = true; return; }
           const fx = HB.fixture(room.fixtureId);
-          preview.innerHTML = `<div class="card fade-up"><div class="row-between mb-16"><span class="h-eyebrow">${esc(room.title)}</span><span class="badge">${room.participants.length} ${plural(room.participants.length, 'игрок', 'игрока', 'игроков')}</span></div>${ui.fixtureRow(fx)}<div class="mt-16">${ui.avatarStack(room.participants.map((p) => p.name), 6)}</div></div>`;
+          preview.innerHTML = `<div class="card fade-up"><div class="row-between mb-16"><span class="h-eyebrow">${esc(room.title)}</span><span class="badge">${room.participants.length} ${HB.i18n.plural(room.participants.length, 'players')}</span></div>${ui.fixtureRow(fx)}<div class="mt-16">${ui.avatarStack(room.participants.map((p) => p.name), 6)}</div></div>`;
           nameBox.style.display = ''; submit.disabled = false;
         }
 
@@ -296,10 +295,10 @@
         submit.addEventListener('click', () => {
           if (!room) return;
           const nm = view.querySelector('#jn-name').value.trim();
-          if (!nm) { ui.toast('Введи своё имя', 'err'); return; }
+          if (!nm) { ui.toast(HB.i18n.t('join.errName'), 'err'); return; }
           HB.joinRoom(room, nm);
           HB.session.pendingCode = null; HB.saveSession();
-          ui.toast('Ты в игре! 🎉', 'ok');
+          ui.toast(HB.i18n.t('join.joined'), 'ok');
           go('#/room/' + room.id);
         });
         if (preset) refresh();
@@ -312,7 +311,7 @@
      ============================================================ */
   S.room = function (params) {
     const room = HB.room(params.id);
-    if (!room) return { html: redirectNote('Комната не найдена', '#/home', 'На главную') };
+    if (!room) return { html: redirectNote(HB.i18n.t('redirect.roomNotFound'), '#/home', HB.i18n.t('redirect.toHome')) };
     const fx = HB.fixture(room.fixtureId);
     const me = HB.session.me;
     const meP = room.participants.find((p) => p.name === me);
@@ -324,7 +323,7 @@
     // герой: середина зависит от статуса
     let mid;
     if (fx.status === 'live') mid = `<div class="hf-score" style="color:var(--live)">${fx.score.home}<span class="sep">:</span>${fx.score.away}</div><div class="hf-status"><span class="badge badge-live"><span class="dot"></span>${fx.minute}'</span></div>`;
-    else if (fx.status === 'finished') mid = `<div class="hf-score">${fx.score.home}<span class="sep">:</span>${fx.score.away}</div><div class="hf-status"><span class="badge badge-done">Финал</span></div>`;
+    else if (fx.status === 'finished') mid = `<div class="hf-score">${fx.score.home}<span class="sep">:</span>${fx.score.away}</div><div class="hf-status"><span class="badge badge-done">${HB.i18n.t('badge.final')}</span></div>`;
     else mid = `<div class="hf-time">${HB.fmtTime(fx.kickoff)}</div><div class="hf-status"><span class="badge badge-soon">${HB.fmtDay(fx.kickoff)}</span></div>`;
 
     const ranking = reveal ? HB.ranking(room, actual) : null;
@@ -335,9 +334,9 @@
     if (!me || !meP) {
       predictorHtml = `<div class="card glass text-c fade-up d1">
         <div style="font-size:34px">🙋</div>
-        <h3 style="font-family:var(--display);font-size:17px;margin:6px 0 4px">Присоединяйся к игре</h3>
-        <p class="muted" style="font-size:13.5px;margin-bottom:14px">Добавь себя, чтобы сделать прогноз</p>
-        <button class="btn btn-ghost" data-action="join-here">${ui.icon('plus', { size: 20 })} Я в игре</button>
+        <h3 style="font-family:var(--display);font-size:17px;margin:6px 0 4px">${HB.i18n.t('room.joinTitle')}</h3>
+        <p class="muted" style="font-size:13.5px;margin-bottom:14px">${HB.i18n.t('room.joinText')}</p>
+        <button class="btn btn-ghost" data-action="join-here">${ui.icon('plus', { size: 20 })} ${HB.i18n.t('room.joinBtn')}</button>
       </div>`;
     } else if (!locked) {
       const d = draft(room.id, meP.prediction);
@@ -345,33 +344,33 @@
     } else {
       // закрыто: показать мой прогноз и мои очки
       const pts = HB.scoreFor(meP.prediction, actual);
-      predictorHtml = `<div class="card fade-up d1"><div class="row-between"><div><div class="h-eyebrow">Твой прогноз</div><div style="font-family:var(--display);font-weight:800;font-size:26px;margin-top:6px">${meP.prediction ? meP.prediction.home + ' : ' + meP.prediction.away : '— : —'}</div></div><div class="rank-pts"><div class="v">${pts}</div><div class="u">${HB.data.app.currency}</div></div></div></div>`;
+      predictorHtml = `<div class="card fade-up d1"><div class="row-between"><div><div class="h-eyebrow">${HB.i18n.t('room.yourPrediction')}</div><div style="font-family:var(--display);font-weight:800;font-size:26px;margin-top:6px">${meP.prediction ? meP.prediction.home + ' : ' + meP.prediction.away : '— : —'}</div></div><div class="rank-pts"><div class="v">${pts}</div><div class="u">${HB.cur()}</div></div></div></div>`;
     }
 
     return {
       html: `
-      ${topbar(room.title, { back: true, sub: HB.league(fx.leagueId).name, right: `<button class="icon-btn" data-action="share-room" aria-label="Поделиться">${ui.icon('share')}</button>` })}
+      ${topbar(room.title, { back: true, sub: HB.i18n.d(HB.league(fx.leagueId).name), right: `<button class="icon-btn" data-action="share-room" aria-label="${esc(HB.i18n.t('common.share'))}">${ui.icon('share')}</button>` })}
 
       ${ui.heroFixture(fx, mid)}
 
       <div class="code-box mt-16 fade-up">
         <div>
-          <div class="cb-label">Код комнаты</div>
+          <div class="cb-label">${HB.i18n.t('join.codeTitle')}</div>
           <div class="cb-code">${esc(room.code)}</div>
         </div>
         <div class="cb-actions">
-          <button class="icon-btn" data-action="copy-code" aria-label="Копировать">${ui.icon('copy', { size: 19 })}</button>
-          <button class="icon-btn" data-action="share-room" aria-label="Поделиться">${ui.icon('share', { size: 19 })}</button>
+          <button class="icon-btn" data-action="copy-code" aria-label="${esc(HB.i18n.t('common.copy'))}">${ui.icon('copy', { size: 19 })}</button>
+          <button class="icon-btn" data-action="share-room" aria-label="${esc(HB.i18n.t('common.share'))}">${ui.icon('share', { size: 19 })}</button>
         </div>
       </div>
 
-      ${!locked ? `<div class="mt-16 fade-up d1"><div class="row-between mb-8" style="padding:0 2px"><span class="muted" style="font-size:13px">Сделали прогноз</span><span class="muted tnum" style="font-size:13px">${readyCount}/${room.participants.length}</span></div><div class="prog"><i style="width:${Math.round(readyCount / room.participants.length * 100)}%"></i></div></div>` : ''}
+      ${!locked ? `<div class="mt-16 fade-up d1"><div class="row-between mb-8" style="padding:0 2px"><span class="muted" style="font-size:13px">${HB.i18n.t('room.progress')}</span><span class="muted tnum" style="font-size:13px">${readyCount}/${room.participants.length}</span></div><div class="prog"><i style="width:${Math.round(readyCount / room.participants.length * 100)}%"></i></div></div>` : ''}
 
       <div class="mt-16">${predictorHtml}</div>
 
       <div class="section-title fade-up d2">
-        <h2>${reveal ? 'Таблица' : 'Игроки'} · ${room.participants.length}</h2>
-        ${isCreator ? `<button class="link" data-action="add-player">+ Добавить</button>` : ''}
+        <h2>${reveal ? HB.i18n.t('room.table') : HB.i18n.t('room.players')} · ${room.participants.length}</h2>
+        ${isCreator ? `<button class="link" data-action="add-player">${HB.i18n.t('room.addPlayer')}</button>` : ''}
       </div>
 
       <div class="plist fade-up d2">
@@ -380,9 +379,9 @@
           : room.participants.map((p) => participantRow(p, me)).join('')}
       </div>
 
-      ${fx.status === 'live' ? `<div class="mt-24 fade-up d3"><a class="btn btn-gold" href="#/results/${room.id}">${ui.icon('trophy', { size: 20 })} Live-таблица лидеров</a></div>` : ''}
-      ${fx.status === 'finished' ? `<div class="mt-24 fade-up d3"><a class="btn btn-gold" href="#/results/${room.id}">${ui.icon('trophy', { size: 20 })} Смотреть результаты</a></div>` : ''}
-      ${fx.status === 'upcoming' ? `<div class="card glass mt-24 text-c fade-up d3"><span class="muted" style="font-size:13px">${ui.icon('lock', { size: 15 })} Прогнозы откроются для всех на старте матча</span></div>` : ''}
+      ${fx.status === 'live' ? `<div class="mt-24 fade-up d3"><a class="btn btn-gold" href="#/results/${room.id}">${ui.icon('trophy', { size: 20 })} ${HB.i18n.t('room.liveBoard')}</a></div>` : ''}
+      ${fx.status === 'finished' ? `<div class="mt-24 fade-up d3"><a class="btn btn-gold" href="#/results/${room.id}">${ui.icon('trophy', { size: 20 })} ${HB.i18n.t('room.seeResults')}</a></div>` : ''}
+      ${fx.status === 'upcoming' ? `<div class="card glass mt-24 text-c fade-up d3"><span class="muted" style="font-size:13px">${ui.icon('lock', { size: 15 })} ${HB.i18n.t('room.lockHint')}</span></div>` : ''}
       `,
       onMount(view) {
         const room2 = HB.room(params.id);
@@ -400,7 +399,7 @@
         if (saveBtn) saveBtn.addEventListener('click', () => {
           const d = drafts[room2.id];
           HB.setPrediction(room2, HB.session.me, d.home, d.away);
-          ui.haptic(14); ui.toast('Прогноз сохранён ✅', 'ok');
+          ui.haptic(14); ui.toast(HB.i18n.t('room.saved'), 'ok');
           HB.router.render();
         });
       }
@@ -415,13 +414,13 @@
   function predictorBlock(fx, d, existing) {
     const h = HB.team(fx.homeId), a = HB.team(fx.awayId);
     return `<div class="card predictor fade-up d1">
-      <div class="row-between" style="padding:0 2px 4px"><span class="h-eyebrow">${existing ? 'Изменить прогноз' : 'Твой прогноз'}</span>${existing ? `<span class="badge badge-gold">${ui.icon('check', { size: 13 })} Сделан</span>` : ''}</div>
+      <div class="row-between" style="padding:0 2px 4px"><span class="h-eyebrow">${existing ? HB.i18n.t('room.changePrediction') : HB.i18n.t('room.yourPrediction')}</span>${existing ? `<span class="badge badge-gold">${ui.icon('check', { size: 13 })} ${HB.i18n.t('room.made')}</span>` : ''}</div>
       <div class="pr-teams">
         ${stepperSide('home', h, d.home)}
         <div class="pr-vs">:</div>
         ${stepperSide('away', a, d.away)}
       </div>
-      <button class="btn mt-16" id="save-pred">${ui.icon('check', { size: 20 })} ${existing ? 'Обновить прогноз' : 'Сохранить прогноз'}</button>
+      <button class="btn mt-16" id="save-pred">${ui.icon('check', { size: 20 })} ${existing ? HB.i18n.t('room.update') : HB.i18n.t('room.save')}</button>
     </div>`;
   }
   function stepperSide(side, team, val) {
@@ -429,8 +428,8 @@
       <div class="st-name">${ui.crest(team.id, 'sm')} <span style="max-width:7ch;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(team.short)}</span></div>
       <div class="st-val" id="val-${side}" style="background:var(--surface-2)">${val}</div>
       <div class="step-btns">
-        <button class="step-btn" data-step="${side}" data-dir="-1" aria-label="минус">${ui.icon('minus', { size: 20 })}</button>
-        <button class="step-btn" data-step="${side}" data-dir="1" aria-label="плюс">${ui.icon('plus', { size: 20 })}</button>
+        <button class="step-btn" data-step="${side}" data-dir="-1" aria-label="${esc(HB.i18n.t('common.minus'))}">${ui.icon('minus', { size: 20 })}</button>
+        <button class="step-btn" data-step="${side}" data-dir="1" aria-label="${esc(HB.i18n.t('common.plus'))}">${ui.icon('plus', { size: 20 })}</button>
       </div>
     </div>`;
   }
@@ -446,12 +445,12 @@
       ${ui.avatar(p.name)}
       <div class="pinfo">
         <div class="pname">${esc(p.name)}
-          ${p.name === me ? '<span class="minitag you">Ты</span>' : ''}
-          ${p.isCreator ? '<span class="minitag host">Хост</span>' : ''}
+          ${p.name === me ? `<span class="minitag you">${HB.i18n.t('room.you')}</span>` : ''}
+          ${p.isCreator ? `<span class="minitag host">${HB.i18n.t('room.host')}</span>` : ''}
         </div>
-        <div class="ptag">${ready ? 'Прогноз сделан' : 'Ждём прогноз…'}</div>
+        <div class="ptag">${ready ? HB.i18n.t('room.predMade') : HB.i18n.t('room.predWait')}</div>
       </div>
-      <div class="pred-pill ${ready ? '' : 'empty'}">${ready ? (ui.icon('check', { size: 15 })) : 'не готов'}</div>
+      <div class="pred-pill ${ready ? '' : 'empty'}">${ready ? (ui.icon('check', { size: 15 })) : HB.i18n.t('room.notReady')}</div>
     </div>`;
   }
 
@@ -464,11 +463,11 @@
       <div class="pinfo">
         <div class="pname">${esc(r.name)}
           ${i === 0 && r.points > 0 ? '<span class="crown">' + ui.icon('trophy', { size: 15 }) + '</span>' : ''}
-          ${r.name === me ? '<span class="minitag you">Ты</span>' : ''}
+          ${r.name === me ? `<span class="minitag you">${HB.i18n.t('room.you')}</span>` : ''}
         </div>
-        <div class="ptag">Прогноз: <b style="color:var(--text-2)">${ready ? r.prediction.home + ':' + r.prediction.away : '—'}</b>${exact ? ' · <span style="color:var(--primary)">точно!</span>' : ''}</div>
+        <div class="ptag">${HB.i18n.t('room.predLabel')}: <b style="color:var(--text-2)">${ready ? r.prediction.home + ':' + r.prediction.away : '—'}</b>${exact ? ` · <span style="color:var(--primary)">${HB.i18n.t('room.exact')}</span>` : ''}</div>
       </div>
-      <div class="rank-pts"><div class="v">${r.points}</div><div class="u">${HB.data.app.currency}</div></div>
+      <div class="rank-pts"><div class="v">${r.points}</div><div class="u">${HB.cur()}</div></div>
     </div>`;
   }
 
@@ -477,7 +476,7 @@
      ============================================================ */
   S.results = function (params) {
     const room = HB.room(params.id);
-    if (!room) return { html: redirectNote('Комната не найдена', '#/home', 'На главную') };
+    if (!room) return { html: redirectNote(HB.i18n.t('redirect.roomNotFound'), '#/home', HB.i18n.t('redirect.toHome')) };
     const fx = HB.fixture(room.fixtureId);
     const actual = fx.score || { home: 0, away: 0 };
     const ranking = HB.ranking(room, actual);
@@ -488,7 +487,7 @@
         backTo: '#/room/' + room.id,
         fx, actual, ranking, isFinal,
         live: fx.status === 'live', minute: fx.minute,
-        shareText: `Игра «${room.title}» в ScorePick`
+        shareText: HB.i18n.t('share.results', { title: room.title })
       }),
       onMount(view) { if (isFinal) setTimeout(() => ui.confetti(), 250); }
     };
@@ -497,12 +496,12 @@
   // ---------- РЕКАП из истории ----------
   S.recap = function (params) {
     const h = HB.historyItem(params.id);
-    if (!h) return { html: redirectNote('Игра не найдена', '#/history', 'К истории') };
+    if (!h) return { html: redirectNote(HB.i18n.t('redirect.gameNotFound'), '#/history', HB.i18n.t('redirect.toHistory')) };
     const fx = { homeId: h.fixture.homeId, awayId: h.fixture.awayId, leagueId: h.fixture.leagueId, kickoff: h.fixture.kickoff, venue: h.fixture.venue, status: 'finished', score: h.finalScore };
     const ranking = h.participants.map((p) => ({ name: p.name, prediction: p.prediction, points: p.points, close: HB.closeness(p.prediction, h.finalScore) }))
       .sort((a, b) => b.points - a.points || a.close - b.close);
     return {
-      html: resultsView({ title: h.title, backTo: '#/history', fx, actual: h.finalScore, ranking, isFinal: true, shareText: `Игра «${h.title}» в ScorePick` }),
+      html: resultsView({ title: h.title, backTo: '#/history', fx, actual: h.finalScore, ranking, isFinal: true, shareText: HB.i18n.t('share.results', { title: h.title }) }),
       onMount() { setTimeout(() => ui.confetti(), 250); }
     };
   };
@@ -513,34 +512,34 @@
     const winnerTie = ranking.filter((r) => r.points === winner.points && r.points > 0);
     let mid;
     if (o.live) mid = `<div class="hf-score" style="color:var(--live)">${actual.home}<span class="sep">:</span>${actual.away}</div><div class="hf-status"><span class="badge badge-live"><span class="dot"></span>${o.minute}'</span></div>`;
-    else mid = `<div class="hf-score">${actual.home}<span class="sep">:</span>${actual.away}</div><div class="hf-status"><span class="badge badge-done">Финал</span></div>`;
+    else mid = `<div class="hf-score">${actual.home}<span class="sep">:</span>${actual.away}</div><div class="hf-status"><span class="badge badge-done">${HB.i18n.t('badge.final')}</span></div>`;
 
     const winnerBlock = (winner && winner.points > 0)
       ? `<div class="card fade-up d1" style="background:radial-gradient(120% 90% at 50% 0%, rgba(255,194,51,.14), transparent 60%);border-color:rgba(255,194,51,.3)">
           <div class="trophy-wrap"><div class="trophy">🏆</div>
-            <div class="winner-name">${esc(winnerTie.length > 1 ? 'Ничья!' : winner.name)}</div>
-            <div class="winner-sub">${winnerTie.length > 1 ? winnerTie.map((w) => esc(w.name)).join(' и ') + ' — поровну' : 'Лучший прогноз: ' + (winner.prediction ? winner.prediction.home + ':' + winner.prediction.away : '—') + ' · ' + winner.points + ' ' + HB.data.app.currency}</div>
+            <div class="winner-name">${esc(winnerTie.length > 1 ? HB.i18n.t('results.draw') : winner.name)}</div>
+            <div class="winner-sub">${winnerTie.length > 1 ? winnerTie.map((w) => esc(w.name)).join(HB.i18n.t('results.tieJoin')) + ' ' + HB.i18n.t('results.tieSuffix') : HB.i18n.t('results.bestPred') + ' ' + (winner.prediction ? winner.prediction.home + ':' + winner.prediction.away : '—') + ' · ' + winner.points + ' ' + HB.cur()}</div>
           </div>
         </div>`
-      : `<div class="card glass text-c fade-up d1"><div style="font-size:40px">🤷</div><div class="winner-sub mt-8">${isFinal ? 'Никто не угадал — бывает!' : 'Пока очков нет'}</div></div>`;
+      : `<div class="card glass text-c fade-up d1"><div style="font-size:40px">🤷</div><div class="winner-sub mt-8">${isFinal ? HB.i18n.t('results.nobody') : HB.i18n.t('results.noPoints')}</div></div>`;
 
     return `
-      ${topbar(isFinal ? 'Результаты' : 'Live-таблица', { back: true, sub: o.title, right: `<button class="icon-btn" data-action="share-results" data-text="${esc(o.shareText)}" aria-label="Поделиться">${ui.icon('share')}</button>` })}
+      ${topbar(isFinal ? HB.i18n.t('results.title') : HB.i18n.t('results.liveTitle'), { back: true, sub: o.title, right: `<button class="icon-btn" data-action="share-results" data-text="${esc(o.shareText)}" aria-label="${esc(HB.i18n.t('common.share'))}">${ui.icon('share')}</button>` })}
       ${ui.heroFixture(fx, mid)}
       <div class="mt-16">${winnerBlock}</div>
 
-      <div class="section-title fade-up d2"><h2>${isFinal ? 'Итоговая таблица' : 'Сейчас лидируют'}</h2><span class="dim" style="font-size:13px">${ranking.length} ${plural(ranking.length, 'игрок', 'игрока', 'игроков')}</span></div>
+      <div class="section-title fade-up d2"><h2>${isFinal ? HB.i18n.t('results.finalTable') : HB.i18n.t('results.leadingNow')}</h2><span class="dim" style="font-size:13px">${ranking.length} ${HB.i18n.plural(ranking.length, 'players')}</span></div>
       <div class="plist fade-up d2">
         ${ranking.map((r, i) => resultRow(r, i, actual)).join('')}
       </div>
 
       <div class="card glass mt-24 fade-up d3">
-        <div class="h-eyebrow mb-8">Как считаются очки</div>
-        ${HB.data.scoring.rules.map((rule) => `<div class="row-between" style="padding:7px 0;border-bottom:1px solid var(--stroke)"><span class="muted" style="font-size:13.5px"><b style="color:var(--text)">${rule.label}</b> · ${esc(rule.desc)}</span><span class="badge badge-gold">+${rule.points}</span></div>`).join('')}
+        <div class="h-eyebrow mb-8">${HB.i18n.t('results.scoringTitle')}</div>
+        ${HB.data.scoring.rules.map((rule) => `<div class="row-between" style="padding:7px 0;border-bottom:1px solid var(--stroke)"><span class="muted" style="font-size:13.5px"><b style="color:var(--text)">${esc(HB.i18n.d(rule.label))}</b> · ${esc(HB.i18n.d(rule.desc))}</span><span class="badge badge-gold">+${rule.points}</span></div>`).join('')}
       </div>
 
-      ${o.live ? `<div class="card glass mt-16 text-c fade-up d3"><span class="muted" style="font-size:13px">${ui.icon('flame', { size: 15 })} Таблица обновляется по ходу матча</span></div>` : ''}
-      <div class="mt-16 fade-up d3"><a class="btn btn-ghost" href="${o.backTo}">${ui.icon('back', { size: 20 })} Назад в комнату</a></div>
+      ${o.live ? `<div class="card glass mt-16 text-c fade-up d3"><span class="muted" style="font-size:13px">${ui.icon('flame', { size: 15 })} ${HB.i18n.t('results.liveHint')}</span></div>` : ''}
+      <div class="mt-16 fade-up d3"><a class="btn btn-ghost" href="${o.backTo}">${ui.icon('back', { size: 20 })} ${HB.i18n.t('results.backToRoom')}</a></div>
     `;
   }
 
@@ -552,10 +551,10 @@
       <div class="rank-num">${i + 1}</div>
       ${ui.avatar(r.name)}
       <div class="pinfo">
-        <div class="pname">${esc(r.name)} ${exact ? '<span class="badge badge-gold" style="padding:2px 7px;font-size:10px">ТОЧНО</span>' : ''}</div>
-        <div class="rank-pred">Прогноз: ${ready ? r.prediction.home + ':' + r.prediction.away : '—'}</div>
+        <div class="pname">${esc(r.name)} ${exact ? `<span class="badge badge-gold" style="padding:2px 7px;font-size:10px">${HB.i18n.t('results.exactTag')}</span>` : ''}</div>
+        <div class="rank-pred">${HB.i18n.t('room.predLabel')}: ${ready ? r.prediction.home + ':' + r.prediction.away : '—'}</div>
       </div>
-      <div class="rank-pts"><div class="v">${r.points}</div><div class="u">${HB.data.app.currency}</div></div>
+      <div class="rank-pts"><div class="v">${r.points}</div><div class="u">${HB.cur()}</div></div>
     </div>`;
   }
 
@@ -566,16 +565,16 @@
     const rooms = HB.data.rooms;
     return {
       html: `
-      ${topbar('Комнаты', { sub: 'Твои активные игры', right: `<button class="icon-btn" data-action="create-game" aria-label="Создать">${ui.icon('plus')}</button>` })}
+      ${topbar(HB.i18n.t('rooms.title'), { sub: HB.i18n.t('rooms.sub'), right: `<button class="icon-btn" data-action="create-game" aria-label="${esc(HB.i18n.t('nav.create'))}">${ui.icon('plus')}</button>` })}
       <div class="card glass fade-up">
         <div class="row">
           <input class="input input-code" id="rooms-code" maxlength="6" placeholder="• • • • • •" />
           <button class="btn btn-sm" data-action="join-code-rooms" style="flex:0 0 auto">${ui.icon('arrowr', { size: 18 })}</button>
         </div>
-        <div class="dim text-c" style="font-size:12.5px;margin-top:10px">Введи код, чтобы войти в чужую комнату</div>
+        <div class="dim text-c" style="font-size:12.5px;margin-top:10px">${HB.i18n.t('rooms.joinHint')}</div>
       </div>
       ${rooms.length ? `<div class="stack mt-16 fade-up d1">${rooms.map((r) => roomCard(r)).join('')}</div>`
-        : `<div class="empty"><div class="e-ic">📭</div><h3>Пока нет комнат</h3><p>Создай первую игру и позови друзей</p><button class="btn" data-action="create-game" style="max-width:220px;margin:0 auto">${ui.icon('bolt', { size: 20 })} Создать игру</button></div>`}
+        : `<div class="empty"><div class="e-ic">📭</div><h3>${HB.i18n.t('rooms.emptyTitle')}</h3><p>${HB.i18n.t('rooms.emptyText')}</p><button class="btn" data-action="create-game" style="max-width:220px;margin:0 auto">${ui.icon('bolt', { size: 20 })} ${HB.i18n.t('home.create')}</button></div>`}
       `,
       onMount(view) {
         const code = view.querySelector('#rooms-code');
@@ -595,18 +594,18 @@
 
     return {
       html: `
-      ${topbar('История', { sub: 'Прошлые игры и победители' })}
+      ${topbar(HB.i18n.t('history.title'), { sub: HB.i18n.t('history.sub') })}
       ${hist.length ? `
       <div class="stat-grid fade-up">
-        <div class="stat"><div class="v">${hist.length}</div><div class="l">Сыграно</div></div>
-        <div class="stat"><div class="v gold">${topWinner ? esc(topWinner) : '—'}</div><div class="l">Чаще побеждает</div></div>
-        <div class="stat"><div class="v green">${Object.keys(wins).length}</div><div class="l">Победителей</div></div>
+        <div class="stat"><div class="v">${hist.length}</div><div class="l">${HB.i18n.t('history.statPlayed')}</div></div>
+        <div class="stat"><div class="v gold">${topWinner ? esc(topWinner) : '—'}</div><div class="l">${HB.i18n.t('history.statTopWinner')}</div></div>
+        <div class="stat"><div class="v green">${Object.keys(wins).length}</div><div class="l">${HB.i18n.t('history.statWinners')}</div></div>
       </div>
-      <div class="section-title fade-up d1"><h2>Архив игр</h2></div>
+      <div class="section-title fade-up d1"><h2>${HB.i18n.t('history.archive')}</h2></div>
       <div class="stack fade-up d1">
         ${hist.slice().sort((a, b) => new Date(b.fixture.kickoff) - new Date(a.fixture.kickoff)).map((h) => historyCard(h)).join('')}
       </div>`
-      : `<div class="empty"><div class="e-ic">📜</div><h3>История пуста</h3><p>Сыграй первую игру — и она появится здесь</p></div>`}
+      : `<div class="empty"><div class="e-ic">📜</div><h3>${HB.i18n.t('history.emptyTitle')}</h3><p>${HB.i18n.t('history.emptyText')}</p></div>`}
       `
     };
   };
@@ -620,8 +619,8 @@
       </div>
       ${ui.fixtureRow(fx)}
       <div class="row-between mt-16" style="padding-top:14px;border-top:1px solid var(--stroke)">
-        <span class="row" style="gap:8px">${ui.avatar(h.winner, 28)}<span style="font-size:13.5px"><span class="dim">Победитель</span> <b>${esc(h.winner)}</b></span></span>
-        <span class="badge badge-gold">${ui.icon('trophy', { size: 13 })} ${Math.max.apply(null, h.participants.map((p) => p.points))} ${HB.data.app.currency}</span>
+        <span class="row" style="gap:8px">${ui.avatar(h.winner, 28)}<span style="font-size:13.5px"><span class="dim">${HB.i18n.t('history.winner')}</span> <b>${esc(h.winner)}</b></span></span>
+        <span class="badge badge-gold">${ui.icon('trophy', { size: 13 })} ${Math.max.apply(null, h.participants.map((p) => p.points))} ${HB.cur()}</span>
       </div>
     </a>`;
   }
@@ -631,12 +630,6 @@
      ============================================================ */
   function redirectNote(msg, hash, btn) {
     return `${topbar('', { back: true })}<div class="empty"><div class="e-ic">🤔</div><h3>${esc(msg)}</h3><a class="btn" href="${hash}" style="max-width:240px;margin:10px auto 0">${esc(btn)}</a></div>`;
-  }
-  function plural(n, one, few, many) {
-    const m10 = n % 10, m100 = n % 100;
-    if (m10 === 1 && m100 !== 11) return one;
-    if (m10 >= 2 && m10 <= 4 && (m100 < 10 || m100 >= 20)) return few;
-    return many;
   }
   HB.screens._roomCard = roomCard;
 })();

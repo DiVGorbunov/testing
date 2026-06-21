@@ -1,11 +1,12 @@
 /* ScorePick — service worker: офлайн-кэш (стратегия «сначала сеть, потом кэш») */
-const CACHE = 'scorepick-v2';
+const CACHE = 'scorepick-v3';
 const ASSETS = [
   './',
   './index.html',
   './settings.json',
   './manifest.json',
   './css/styles.css',
+  './js/i18n.js',
   './js/store.js',
   './js/ui.js',
   './js/screens.js',

@@ -1,14 +1,14 @@
 {
-  "name": "ScorePick — Угадай счёт",
+  "name": "ScorePick — Predict the Score",
   "short_name": "ScorePick",
-  "description": "Социальная игра-предсказание счёта футбольных матчей для компании друзей.",
+  "description": "A social football score-prediction game for a group of friends.",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
   "orientation": "portrait",
   "background_color": "#080B11",
   "theme_color": "#080B11",
-  "lang": "ru",
+  "lang": "en",
   "categories": ["sports", "games", "social"],
   "icons": [
     { "src": "icons/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" },
