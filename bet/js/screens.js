@@ -1,5 +1,5 @@
 /* ============================================================
-   HighBet — screens: рендер всех экранов + их интерактив
+   ScorePick — screens: рендер всех экранов + их интерактив
    Каждый экран: { html, onMount?(view) }
    ============================================================ */
 (function () {
@@ -488,7 +488,7 @@
         backTo: '#/room/' + room.id,
         fx, actual, ranking, isFinal,
         live: fx.status === 'live', minute: fx.minute,
-        shareText: `Игра «${room.title}» в HighBet`
+        shareText: `Игра «${room.title}» в ScorePick`
       }),
       onMount(view) { if (isFinal) setTimeout(() => ui.confetti(), 250); }
     };
@@ -502,7 +502,7 @@
     const ranking = h.participants.map((p) => ({ name: p.name, prediction: p.prediction, points: p.points, close: HB.closeness(p.prediction, h.finalScore) }))
       .sort((a, b) => b.points - a.points || a.close - b.close);
     return {
-      html: resultsView({ title: h.title, backTo: '#/history', fx, actual: h.finalScore, ranking, isFinal: true, shareText: `Игра «${h.title}» в HighBet` }),
+      html: resultsView({ title: h.title, backTo: '#/history', fx, actual: h.finalScore, ranking, isFinal: true, shareText: `Игра «${h.title}» в ScorePick` }),
       onMount() { setTimeout(() => ui.confetti(), 250); }
     };
   };

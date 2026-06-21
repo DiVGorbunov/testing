@@ -1,5 +1,5 @@
 /* ============================================================
-   HighBet — app: роутер, навигация, действия, запуск
+   ScorePick — app: роутер, навигация, действия, запуск
    ============================================================ */
 (function () {
   'use strict';
@@ -91,12 +91,12 @@
         const room = HB.room(router.current.params.id);
         if (room) {
           const url = location.origin + location.pathname + '#/join';
-          ui.share({ title: 'HighBet', text: `Заходи в игру «${room.title}» — код ${room.code}`, url });
+          ui.share({ title: 'ScorePick', text: `Заходи в игру «${room.title}» — код ${room.code}`, url });
         }
         break;
       }
       case 'share-results': {
-        ui.share({ title: 'HighBet', text: (t.dataset.text || 'Результаты в HighBet') + ' ⚽🏆', url: location.href });
+        ui.share({ title: 'ScorePick', text: (t.dataset.text || 'Результаты в ScorePick') + ' ⚽🏆', url: location.href });
         break;
       }
       case 'add-player': openAddPlayer(); break;

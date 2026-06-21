@@ -1,5 +1,5 @@
-/* HighBet — service worker: офлайн-кэш (стратегия «сначала сеть, потом кэш») */
-const CACHE = 'highbet-v2';
+/* ScorePick — service worker: офлайн-кэш (стратегия «сначала сеть, потом кэш») */
+const CACHE = 'scorepick-v2';
 const ASSETS = [
   './',
   './index.html',

@@ -1,11 +1,11 @@
 /* ============================================================
-   HighBet — store: загрузка данных, состояние, очки, помощники
+   ScorePick — store: загрузка данных, состояние, очки, помощники
    ============================================================ */
 (function () {
   'use strict';
 
-  const LS_KEY = 'highbet_state_v1';
-  const SESSION_KEY = 'highbet_session_v1';
+  const LS_KEY = 'scorepick_state_v1';
+  const SESSION_KEY = 'scorepick_session_v1';
 
   const HB = (window.HB = window.HB || {});
 
