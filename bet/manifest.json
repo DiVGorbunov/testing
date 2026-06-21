@@ -1,6 +1,6 @@
 {
-  "name": "HighBet — Угадай счёт",
-  "short_name": "HighBet",
+  "name": "ScorePick — Угадай счёт",
+  "short_name": "ScorePick",
   "description": "Социальная игра-предсказание счёта футбольных матчей для компании друзей.",
   "start_url": "./index.html",
   "scope": "./",
