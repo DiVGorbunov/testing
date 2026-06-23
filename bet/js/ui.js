@@ -5,6 +5,7 @@
   'use strict';
   const HB = (window.HB = window.HB || {});
   const ui = (HB.ui = {});
+  const esc = (s) => String(s == null ? '' : s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 
   // ---------- Иконки (inline SVG) ----------
   const ICONS = {
@@ -33,7 +34,8 @@
     star:    '<path d="M12 2l3 6.5 7 .9-5 4.8 1.3 7L12 18l-6.3 3.2L7 14.2 2 9.4l7-.9L12 2z"/>',
     play:    '<path d="M6 4l14 8-14 8V4z"/>',
     arrowr:  '<path d="M5 12h14M13 6l6 6-6 6"/>',
-    globe:   '<circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3a14 14 0 0 1 4 9 14 14 0 0 1-4 9 14 14 0 0 1-4-9 14 14 0 0 1 4-9z"/>'
+    globe:   '<circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3a14 14 0 0 1 4 9 14 14 0 0 1-4 9 14 14 0 0 1-4-9 14 14 0 0 1 4-9z"/>',
+    refresh: '<path d="M21 12a9 9 0 1 1-2.6-6.4M21 3v5h-5"/>'
   };
   ui.icon = function (name, opts) {
     opts = opts || {};
@@ -46,7 +48,11 @@
   ui.crest = function (teamId, size) {
     const t = HB.team(teamId);
     const cls = size === 'sm' ? 'crest crest-sm' : size === 'lg' ? 'crest crest-lg' : 'crest';
-    return `<div class="${cls}" style="--c:${t.color};--c2:${t.color2}">${t.short}</div>`;
+    // если у команды (из API) есть логотип — показываем его; короткий код остаётся фолбэком
+    const logo = t.logo
+      ? `<img class="crest-logo" src="${esc(t.logo)}" alt="" loading="lazy" onerror="this.remove();this.parentNode.classList.remove('has-logo')"/>`
+      : '';
+    return `<div class="${cls}${t.logo ? ' has-logo' : ''}" style="--c:${t.color};--c2:${t.color2}">${logo}<span class="crest-tx">${esc(t.short)}</span></div>`;
   };
 
   ui.avatar = function (name, size) {
@@ -113,6 +119,49 @@
     shown.forEach((n) => { html += ui.avatar(n); });
     if (names.length > max) html += `<div class="avatar more">+${names.length - max}</div>`;
     return html + '</div>';
+  };
+
+  // ---------- Состояния: загрузка / пусто / ошибка / нет API ----------
+  ui.loading = function (label) {
+    return `<div class="state-load"><div class="state-spinner"></div>${label ? `<div class="state-msg">${esc(label)}</div>` : ''}</div>`;
+  };
+  ui.empty = function (o) {
+    o = o || {};
+    return `<div class="empty"><div class="e-ic">${o.icon || '📭'}</div><h3>${esc(o.title || '')}</h3>${o.text ? `<p>${esc(o.text)}</p>` : ''}${o.action || ''}</div>`;
+  };
+  ui.errorState = function (err) {
+    const offline = err && err.isNetwork;
+    const detail = (err && (err.detail || err.message)) || '';
+    return `<div class="empty">
+      <div class="e-ic">${offline ? '📡' : '⚠️'}</div>
+      <h3>${esc(HB.i18n.t(offline ? 'state.offlineTitle' : 'state.errorTitle'))}</h3>
+      <p>${esc(detail)}</p>
+      <button class="btn btn-ghost" data-retry style="max-width:220px;margin:6px auto 0">${ui.icon('refresh', { size: 18 })} ${esc(HB.i18n.t('state.retry'))}</button>
+    </div>`;
+  };
+  // Понятное сообщение из ApiError (для тостов)
+  ui.apiMsg = function (err) {
+    if (err && err.isNetwork) return HB.i18n.t('state.offlineTitle');
+    return (err && (err.detail || err.message)) || HB.i18n.t('state.errorTitle');
+  };
+
+  // Централизованный async-слот: loading → данные / пусто / ошибка (+retry)
+  ui.asyncSlot = function (el, loader, render, opts) {
+    opts = opts || {};
+    if (!el) return;
+    el.innerHTML = ui.loading(opts.loadingLabel);
+    loader().then((data) => {
+      const empty = data == null || (Array.isArray(data) && data.length === 0) || (opts.isEmpty && opts.isEmpty(data));
+      if (empty && opts.empty) { el.innerHTML = ui.empty(opts.empty); if (opts.onEmpty) opts.onEmpty(el); return; }
+      el.innerHTML = render(data) || (opts.empty ? ui.empty(opts.empty) : '');
+      if (opts.onMount) opts.onMount(el, data);
+    }).catch((err) => {
+      console.error('[api]', err);
+      el.innerHTML = ui.errorState(err);
+      const r = el.querySelector('[data-retry]');
+      if (r) r.addEventListener('click', () => ui.asyncSlot(el, loader, render, opts));
+      if (opts.onError) opts.onError(el, err);
+    });
   };
 
   // ---------- Toast ----------

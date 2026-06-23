@@ -13,7 +13,7 @@
   const bootMsg = document.getElementById('boot-msg');
 
   // маршруты: имя -> { tab, flow }
-  const TAB_OF = { home: 'home', fixtures: 'fixtures', rooms: 'rooms', history: 'history' };
+  const TAB_OF = { home: 'home', fixtures: 'fixtures' };
   const FLOW = { create: true, join: true }; // экраны-флоу: прячем таббар
 
   const router = (HB.router = { current: { name: 'home', params: {} } });
@@ -23,7 +23,7 @@
     if (!h) return { name: 'home', params: {} };
     const parts = h.split('/');
     const name = parts[0];
-    if ((name === 'room' || name === 'results' || name === 'recap') && parts[1]) {
+    if ((name === 'room' || name === 'results') && parts[1]) {
       return { name, params: { id: decodeURIComponent(parts[1]) } };
     }
     return { name, params: {} };
@@ -51,7 +51,7 @@
 
     // таббар
     tabbar.style.display = FLOW[route.name] ? 'none' : '';
-    const activeTab = TAB_OF[route.name] || (route.name === 'room' || route.name === 'results' ? 'rooms' : route.name === 'recap' ? 'history' : route.name === 'create' ? 'fixtures' : null);
+    const activeTab = TAB_OF[route.name] || (route.name === 'create' ? 'fixtures' : null);
     tabbar.querySelectorAll('.tab').forEach((t) => t.classList.toggle('active', t.dataset.tab === activeTab));
 
     view.scrollTop = 0;
@@ -82,21 +82,16 @@
         const inp = document.getElementById('home-code');
         tryJoinByCode(inp ? inp.value : ''); break;
       }
-      case 'join-code-rooms': {
-        const inp = document.getElementById('rooms-code');
-        tryJoinByCode(inp ? inp.value : ''); break;
-      }
       case 'copy-code': {
-        const room = HB.room(router.current.params.id);
-        if (room) ui.copy(room.code);
+        const code = (HB.currentRoom && HB.currentRoom.code) || router.current.params.id;
+        if (code) ui.copy(code);
         break;
       }
       case 'share-room': {
-        const room = HB.room(router.current.params.id);
-        if (room) {
-          const url = location.origin + location.pathname + '#/join';
-          ui.share({ title: 'ScorePick', text: HB.i18n.t('share.invite', { title: room.title, code: room.code }), url });
-        }
+        const room = HB.currentRoom;
+        const code = (room && room.code) || router.current.params.id;
+        const url = location.origin + location.pathname + '#/join';
+        ui.share({ title: 'ScorePick', text: HB.i18n.t('share.invite', { title: (room && room.title) || 'ScorePick', code }), url });
         break;
       }
       case 'share-results': {
@@ -111,9 +106,8 @@
 
   function tryJoinByCode(code) {
     code = String(code || '').toUpperCase().trim();
-    if (code.length !== 6) { ui.toast(HB.i18n.t('err.codeLen'), 'err'); return; }
-    const room = HB.roomByCode(code);
-    if (!room) { ui.toast(HB.i18n.t('err.roomNotFound'), 'err'); return; }
+    if (code.length < 4) { ui.toast(HB.i18n.t('err.codeLen'), 'err'); return; }
+    // валидацию комнаты делает экран входа (async GET /rooms/{code})
     HB.session.pendingCode = code; HB.saveSession();
     location.hash = '#/join';
   }
@@ -138,9 +132,11 @@
 
   // ---------- Шторка: добавить игрока (хост) ----------
   function openAddPlayer() {
-    const room = HB.room(router.current.params.id);
-    if (!room) return;
-    const suggestions = HB.data.players.filter((n) => !room.participants.some((p) => p.name.toLowerCase() === n.toLowerCase())).slice(0, 6);
+    const room = HB.currentRoom;
+    const code = (room && room.code) || router.current.params.id;
+    if (!code) return;
+    const taken = (room ? room.participants : []).map((p) => p.name.toLowerCase());
+    const suggestions = (HB.data.players || []).filter((n) => !taken.includes(n.toLowerCase())).slice(0, 6);
     ui.sheet(`
       <h3>${HB.i18n.t('sheet.addTitle')}</h3>
       <p class="muted mb-16" style="font-size:13.5px">${HB.i18n.t('sheet.addText')}</p>
@@ -150,19 +146,25 @@
     `);
     const root = document.getElementById('sheet-root');
     const input = root.querySelector('#ap-name');
+    const btn = root.querySelector('#ap-add');
     root.querySelectorAll('[data-suggest]').forEach((b) => b.addEventListener('click', () => { input.value = b.dataset.suggest; }));
-    root.querySelector('#ap-add').addEventListener('click', () => {
+    btn.addEventListener('click', async () => {
       const nm = input.value.trim();
       if (!nm) { ui.toast(HB.i18n.t('sheet.enterName'), 'err'); return; }
-      if (HB.addParticipant(room, nm)) { ui.closeSheet(); ui.toast(HB.i18n.t('sheet.addedToGame', { name: nm }), 'ok'); HB.router.render(); }
-      else ui.toast(HB.i18n.t('sheet.existing'), 'err');
+      if (taken.includes(nm.toLowerCase())) { ui.toast(HB.i18n.t('sheet.existing'), 'err'); return; }
+      btn.disabled = true;
+      try {
+        await HB.api.addParticipant(code, nm);
+        ui.closeSheet(); ui.toast(HB.i18n.t('sheet.addedToGame', { name: nm }), 'ok'); HB.router.render();
+      } catch (err) { btn.disabled = false; ui.toast(ui.apiMsg(err), 'err'); }
     });
   }
 
   // ---------- Шторка: присоединиться самому ----------
   function openJoinHere() {
-    const room = HB.room(router.current.params.id);
-    if (!room) return;
+    const room = HB.currentRoom;
+    const code = (room && room.code) || router.current.params.id;
+    if (!code) return;
     ui.sheet(`
       <h3>${HB.i18n.t('sheet.joinTitle')}</h3>
       <p class="muted mb-16" style="font-size:13.5px">${HB.i18n.t('sheet.joinText')}</p>
@@ -170,11 +172,16 @@
       <button class="btn" id="jh-add">${ui.icon('check', { size: 20 })} ${HB.i18n.t('sheet.joinBtn')}</button>
     `);
     const root = document.getElementById('sheet-root');
-    root.querySelector('#jh-add').addEventListener('click', () => {
+    const btn = root.querySelector('#jh-add');
+    btn.addEventListener('click', async () => {
       const nm = root.querySelector('#jh-name').value.trim();
       if (!nm) { ui.toast(HB.i18n.t('sheet.enterName'), 'err'); return; }
-      HB.joinRoom(room, nm);
-      ui.closeSheet(); ui.toast(HB.i18n.t('join.joined'), 'ok'); HB.router.render();
+      btn.disabled = true;
+      try {
+        await HB.api.joinRoom(code, nm);
+        HB.session.me = nm; HB.saveSession();
+        ui.closeSheet(); ui.toast(HB.i18n.t('join.joined'), 'ok'); HB.router.render();
+      } catch (err) { btn.disabled = false; ui.toast(ui.apiMsg(err), 'err'); }
     });
   }
 

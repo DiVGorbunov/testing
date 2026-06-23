@@ -4,13 +4,12 @@
 (function () {
   'use strict';
 
-  const LS_KEY = 'scorepick_state_v1';
   const SESSION_KEY = 'scorepick_session_v1';
 
   const HB = (window.HB = window.HB || {});
 
   // ---- Состояние приложения ----
-  HB.data = null;          // данные из settings.json (+ пользовательские комнаты)
+  HB.data = null;          // статический конфиг (settings.json) + каталоги из API
   HB.session = {           // сессия пользователя (кто я, черновики)
     me: null,              // имя текущего игрока
     draftFixtureId: null,  // выбранный матч при создании
@@ -18,20 +17,15 @@
   };
 
   // ---- Загрузка ----
+  // settings.json теперь — ТОЛЬКО статический конфиг: app, scoring, players и
+  // teams/leagues как каталог-фолбэк. Матчи и комнаты приходят из реального
+  // API (js/api.js); каталоги команд/лиг/матчей пополняются нормализаторами API.
   HB.load = async function () {
     const res = await fetch('settings.json', { cache: 'no-store' });
     if (!res.ok) throw new Error('HTTP ' + res.status);
     const base = await res.json();
-
-    // подмешиваем сохранённые пользователем комнаты и правки
-    const saved = readLS();
-    if (saved) {
-      // пользовательские комнаты добавляем/перезаписываем по id
-      const byId = new Map(base.rooms.map((r) => [r.id, r]));
-      (saved.rooms || []).forEach((r) => byId.set(r.id, r));
-      base.rooms = Array.from(byId.values());
-      base.history = saved.history && saved.history.length ? mergeHistory(base.history, saved.history) : base.history;
-    }
+    base.fixtures = [];   // наполняется из API
+    base.rooms = [];      // комнаты живут на бэкенде, тянутся по коду
     HB.data = base;
 
     const sess = readSession();
@@ -39,23 +33,7 @@
     return base;
   };
 
-  function mergeHistory(base, extra) {
-    const byId = new Map(base.map((h) => [h.id, h]));
-    extra.forEach((h) => byId.set(h.id, h));
-    return Array.from(byId.values());
-  }
-
-  // ---- Персистентность ----
-  function readLS() {
-    try { return JSON.parse(localStorage.getItem(LS_KEY)); } catch (e) { return null; }
-  }
-  HB.persist = function () {
-    // сохраняем только пользовательские комнаты (те, что начинаются с user-) + всю историю
-    try {
-      const userRooms = HB.data.rooms.filter((r) => r._user);
-      localStorage.setItem(LS_KEY, JSON.stringify({ rooms: userRooms, history: HB.data.history.filter((h) => h._user) }));
-    } catch (e) {/* приватный режим */}
-  };
+  // ---- Сессия ----
   function readSession() {
     try { return JSON.parse(localStorage.getItem(SESSION_KEY)); } catch (e) { return null; }
   }
@@ -63,56 +41,10 @@
     try { localStorage.setItem(SESSION_KEY, JSON.stringify(HB.session)); } catch (e) {}
   };
 
-  // ---- Аксессоры ----
-  HB.team = (id) => HB.data.teams.find((t) => t.id === id) || { name: '—', short: '??', color: '#555', color2: '#fff', city: '' };
+  // ---- Аксессоры (каталоги пополняются нормализаторами API) ----
+  HB.team = (id) => HB.data.teams.find((t) => t.id === id) || { name: '—', short: '??', color: '#555', color2: '#fff', city: '', logo: null };
   HB.league = (id) => HB.data.leagues.find((l) => l.id === id) || { name: '—', short: '?', emoji: '⚽', color: '#555' };
   HB.fixture = (id) => HB.data.fixtures.find((f) => f.id === id);
-  HB.room = (id) => HB.data.rooms.find((r) => r.id === id);
-  HB.roomByCode = (code) => HB.data.rooms.find((r) => r.code.toUpperCase() === String(code || '').toUpperCase());
-  HB.historyItem = (id) => HB.data.history.find((h) => h.id === id);
-
-  // ---- Действия ----
-  HB.createRoom = function ({ title, creator, fixtureId }) {
-    const id = 'user-' + Date.now().toString(36);
-    const room = {
-      id,
-      _user: true,
-      code: genCode(),
-      title: title || HB.i18n.t('create.defaultTitle'),
-      creator,
-      fixtureId,
-      createdAt: new Date().toISOString(),
-      participants: [{ name: creator, isCreator: true, prediction: null }]
-    };
-    HB.data.rooms.unshift(room);
-    HB.session.me = creator;
-    HB.persist();
-    HB.saveSession();
-    return room;
-  };
-
-  HB.joinRoom = function (room, name) {
-    if (!room.participants.some((p) => p.name.toLowerCase() === name.toLowerCase())) {
-      room.participants.push({ name, prediction: null });
-    }
-    HB.session.me = name;
-    if (room._user) HB.persist();
-    HB.saveSession();
-    return room;
-  };
-
-  HB.addParticipant = function (room, name) {
-    if (room.participants.some((p) => p.name.toLowerCase() === name.toLowerCase())) return false;
-    room.participants.push({ name, prediction: null });
-    if (room._user) HB.persist();
-    return true;
-  };
-
-  HB.setPrediction = function (room, name, home, away) {
-    const p = room.participants.find((x) => x.name === name);
-    if (p) p.prediction = { home, away };
-    if (room._user) HB.persist();
-  };
 
   // ---- Очки и рейтинг ----
   HB.scoreFor = function (prediction, actual) {

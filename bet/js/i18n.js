@@ -26,7 +26,7 @@
         title: 'ScorePick — Predict the Score',
         desc: 'ScorePick — a social football score-prediction game for a group of friends.'
       },
-      nav: { home: 'Home', fixtures: 'Matches', rooms: 'Rooms', history: 'History', create: 'Create game', aria: 'Main navigation' },
+      nav: { home: 'Home', fixtures: 'Matches', create: 'Create game', aria: 'Main navigation' },
       boot: {
         loading: 'Loading data…',
         errorTitle: 'Something went wrong',
@@ -46,8 +46,7 @@
         liveNow: 'Live now',
         create: 'Create game',
         enterCode: 'Enter a room code',
-        statGames: 'Active games', statPlayers: 'Players', statMatches: 'Matches',
-        yourRooms: 'Your rooms', seeAll: 'All',
+        yourRoom: 'Your room',
         upcoming: 'Upcoming matches', allMatches: 'All matches'
       },
       fixtures: {
@@ -92,17 +91,6 @@
         liveHint: 'The table updates as the match goes on',
         backToRoom: 'Back to room', exactTag: 'EXACT'
       },
-      rooms: {
-        title: 'Rooms', sub: 'Your active games',
-        joinHint: 'Enter a code to join someone\'s room',
-        emptyTitle: 'No rooms yet', emptyText: 'Create your first game and invite friends'
-      },
-      history: {
-        title: 'History', sub: 'Past games and winners',
-        statPlayed: 'Played', statTopWinner: 'Top winner', statWinners: 'Winners',
-        archive: 'Game archive', winner: 'Winner',
-        emptyTitle: 'No history yet', emptyText: 'Play your first game — it\'ll show up here'
-      },
       badge: { live: 'LIVE', finished: 'Finished', final: 'Final' },
       sheet: {
         addTitle: 'Add player', addText: 'Add a friend manually — they\'ll be able to predict',
@@ -111,16 +99,19 @@
         joinTitle: 'Play in this room', joinText: 'Enter your name and predict the match',
         joinAsk: "What's your name?", joinBtn: 'Join'
       },
-      err: {
-        codeLen: 'Enter a 6-character code', roomNotFound: 'Room not found',
-        gameNotFound: 'Game not found', sortRoomNotFound: 'Room not found'
-      },
+      err: { codeLen: 'Enter the room code' },
       redirect: {
         pickFirst: 'Pick a match first', pickMatch: 'Pick a match',
-        roomNotFound: 'Room not found', toHome: 'Go home',
-        gameNotFound: 'Game not found', toHistory: 'To history'
+        roomNotFound: 'Room not found', toHome: 'Go home'
       },
       share: { invite: 'Join the game “{title}” — code {code}', results: 'Game “{title}” on ScorePick', resultsFallback: 'Results on ScorePick' },
+      state: {
+        loadingMatches: 'Loading matches…', loadingRoom: 'Loading room…', loadingStandings: 'Loading table…',
+        errorTitle: 'Something went wrong', offlineTitle: 'No connection', retry: 'Retry',
+        noMatchesTitle: 'No matches today', noMatchesText: 'There are no fixtures available right now. Check back later.',
+        noUpcomingTitle: 'No upcoming matches', noUpcomingText: 'Nothing scheduled at the moment.',
+        noStandingsTitle: 'No table yet', noStandingsText: 'It will appear once players make predictions.'
+      },
       currency: 'pts',
       plural: { players: ['player', 'players'], matches: ['match', 'matches'] }
     },
@@ -130,7 +121,7 @@
         title: 'ScorePick — Угадай счёт',
         desc: 'ScorePick — социальная игра-предсказание счёта футбольных матчей для компании друзей.'
       },
-      nav: { home: 'Главная', fixtures: 'Матчи', rooms: 'Комнаты', history: 'История', create: 'Создать игру', aria: 'Главная навигация' },
+      nav: { home: 'Главная', fixtures: 'Матчи', create: 'Создать игру', aria: 'Главная навигация' },
       boot: {
         loading: 'Загружаем данные…',
         errorTitle: 'Что-то пошло не так',
@@ -150,8 +141,7 @@
         liveNow: 'Сейчас идёт',
         create: 'Создать игру',
         enterCode: 'Войти по коду комнаты',
-        statGames: 'Активных игр', statPlayers: 'Игроков', statMatches: 'Матчей',
-        yourRooms: 'Твои комнаты', seeAll: 'Все',
+        yourRoom: 'Твоя комната',
         upcoming: 'Ближайшие матчи', allMatches: 'Все матчи'
       },
       fixtures: {
@@ -196,17 +186,6 @@
         liveHint: 'Таблица обновляется по ходу матча',
         backToRoom: 'Назад в комнату', exactTag: 'ТОЧНО'
       },
-      rooms: {
-        title: 'Комнаты', sub: 'Твои активные игры',
-        joinHint: 'Введи код, чтобы войти в чужую комнату',
-        emptyTitle: 'Пока нет комнат', emptyText: 'Создай первую игру и позови друзей'
-      },
-      history: {
-        title: 'История', sub: 'Прошлые игры и победители',
-        statPlayed: 'Сыграно', statTopWinner: 'Чаще побеждает', statWinners: 'Победителей',
-        archive: 'Архив игр', winner: 'Победитель',
-        emptyTitle: 'История пуста', emptyText: 'Сыграй первую игру — и она появится здесь'
-      },
       badge: { live: 'LIVE', finished: 'Завершён', final: 'Финал' },
       sheet: {
         addTitle: 'Добавить игрока', addText: 'Добавь друга вручную — он сможет сделать прогноз',
@@ -215,16 +194,19 @@
         joinTitle: 'Сыграть в этой комнате', joinText: 'Введи имя — и делай прогноз на матч',
         joinAsk: 'Как тебя зовут?', joinBtn: 'Присоединиться'
       },
-      err: {
-        codeLen: 'Введи код из 6 символов', roomNotFound: 'Комната не найдена',
-        gameNotFound: 'Игра не найдена', sortRoomNotFound: 'Комната не найдена'
-      },
+      err: { codeLen: 'Введи код комнаты' },
       redirect: {
         pickFirst: 'Сначала выбери матч', pickMatch: 'Выбрать матч',
-        roomNotFound: 'Комната не найдена', toHome: 'На главную',
-        gameNotFound: 'Игра не найдена', toHistory: 'К истории'
+        roomNotFound: 'Комната не найдена', toHome: 'На главную'
       },
       share: { invite: 'Заходи в игру «{title}» — код {code}', results: 'Игра «{title}» в ScorePick', resultsFallback: 'Результаты в ScorePick' },
+      state: {
+        loadingMatches: 'Загружаем матчи…', loadingRoom: 'Загружаем комнату…', loadingStandings: 'Загружаем таблицу…',
+        errorTitle: 'Что-то пошло не так', offlineTitle: 'Нет связи', retry: 'Повторить',
+        noMatchesTitle: 'Сегодня матчей нет', noMatchesText: 'Сейчас нет доступных матчей. Загляни позже.',
+        noUpcomingTitle: 'Нет ближайших матчей', noUpcomingText: 'Пока ничего не запланировано.',
+        noStandingsTitle: 'Таблицы пока нет', noStandingsText: 'Она появится, когда игроки сделают прогнозы.'
+      },
       currency: 'очк.',
       plural: { players: ['игрок', 'игрока', 'игроков'], matches: ['матч', 'матча', 'матчей'] }
     }
