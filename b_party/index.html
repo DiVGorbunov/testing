@@ -102,10 +102,11 @@
     color:#fff; text-shadow:0 2px 20px rgba(255,126,200,.55); }
   .hero-name{
     font-family:'Pacifico',cursive;
-    font-size:clamp(58px,20vw,112px);
-    line-height:1.28;
-    padding-bottom:.16em;
-    margin:10px 0 18px;
+    font-size:clamp(56px,19vw,108px);
+    line-height:1.5;
+    padding-bottom:.42em;
+    overflow:visible;
+    margin:6px 0 2px;
     background:linear-gradient(180deg,#fff 0%,var(--gold) 45%,var(--gold-2) 100%);
     -webkit-background-clip:text; background-clip:text; color:transparent;
     filter:drop-shadow(0 6px 26px rgba(255,179,71,.55));
@@ -136,7 +137,7 @@
   /* ===== Подарки ===== */
   .gifts{ display:flex; gap:16px; flex-wrap:wrap; justify-content:center; max-width:420px; }
   .gift{
-    position:relative; width:96px; height:110px; cursor:pointer; user-select:none;
+    position:relative; width:96px; height:150px; cursor:pointer; user-select:none;
     perspective:600px;
   }
   .gift .box{
@@ -155,19 +156,17 @@
   @keyframes giftIdle{ 0%,100%{transform:translateY(0) rotate(-1.5deg)} 50%{transform:translateY(-8px) rotate(1.5deg)} }
   .gift.open .box{ transform:scale(0) rotate(25deg); opacity:0; }
   .gift .note{
-    position:absolute; left:50%; top:50%;
-    width:128px; min-height:122px; padding:13px 11px;
+    position:absolute; inset:0;
     display:flex; align-items:center; justify-content:center; text-align:center;
-    font-size:12px; line-height:1.45; color:#fff;
+    padding:10px 9px; font-size:12px; line-height:1.4; color:#fff;
     background:linear-gradient(160deg, rgba(255,216,107,.30), rgba(255,126,200,.32));
     border:1.5px solid rgba(255,216,107,.6);
     border-radius:18px;
     box-shadow:0 8px 26px rgba(0,0,0,.35), 0 0 22px rgba(255,216,107,.35);
-    opacity:0; transform:translate(-50%,-50%) scale(.4); pointer-events:none;
+    opacity:0; transform:scale(.4); pointer-events:none;
     transition:opacity .4s ease .12s, transform .5s cubic-bezier(.2,1.5,.3,1) .12s;
   }
-  .gift.open{ z-index:5; }
-  .gift.open .note{ opacity:1; transform:translate(-50%,-50%) scale(1); }
+  .gift.open .note{ opacity:1; transform:scale(1); }
   .gift-hint{ margin-top:18px; font-size:13px; color:#e9d5ff; opacity:.8; }
 
   /* ===== Торт ===== */
