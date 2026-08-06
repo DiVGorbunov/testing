@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+<title>Royal Gems Deluxe — Play Demo — SlotKings</title>
+<meta name="description" content="Royal Gems Deluxe playable demo slot by SlotKings. FUN credits only.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cpath d='M8 44 L4 18 L18 30 L32 10 L46 30 L60 18 L56 44 Z' fill='%23E8C368'/%3E%3Crect x='8' y='48' width='48' height='8' rx='2' fill='%239D4EDD'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;800&family=Manrope:wght@400;700;800&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 100%; height: 100%; overflow: hidden; background: #07050c; }
+  #stage { position: fixed; inset: 0; }
+  #stage canvas { display: block; }
+
+  /* loading splash */
+  #splash {
+    position: fixed; inset: 0; z-index: 10;
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 22px;
+    background: radial-gradient(700px 400px at 50% 30%, rgba(123,44,191,.25), transparent 70%), #07050c;
+    transition: opacity .4s ease, visibility .4s ease;
+  }
+  #splash.hidden { opacity: 0; visibility: hidden; }
+  .spinner {
+    width: 54px; height: 54px; border-radius: 50%;
+    border: 4px solid rgba(157,78,221,.25); border-top-color: #e8c368;
+    animation: spin 0.9s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .splash-t {
+    font: 800 22px Cinzel, serif; color: #e8c368; letter-spacing: 5px;
+  }
+
+  /* back to site */
+  #backLink {
+    position: fixed; top: 12px; left: 14px; z-index: 5;
+    font: 700 13px Manrope, sans-serif; letter-spacing: 1px;
+    color: #a99cc0; text-decoration: none;
+    padding: 8px 14px; border-radius: 999px;
+    background: rgba(19,13,32,.7); border: 1px solid rgba(157,78,221,.3);
+    transition: color .2s ease, border-color .2s ease;
+  }
+  #backLink:hover { color: #fff; border-color: #c77dff; }
+
+  /* rotate hint for small portrait screens */
+  #rotate {
+    position: fixed; inset: 0; z-index: 20;
+    display: none; flex-direction: column; align-items: center; justify-content: center; gap: 18px;
+    background: rgba(7,5,12,.96); text-align: center; padding: 30px;
+  }
+  #rotate .ph {
+    width: 46px; height: 84px; border: 3px solid #e8c368; border-radius: 10px;
+    animation: rot 1.6s ease-in-out infinite;
+  }
+  @keyframes rot { 0%, 25% { transform: rotate(0); } 60%, 100% { transform: rotate(90deg); } }
+  #rotate p { font: 700 18px Manrope, sans-serif; color: #f1ecfa; }
+  #rotate span { font: 400 14px Manrope, sans-serif; color: #a99cc0; }
+  /* Portrait now has its own layout, so the rotate prompt is no longer shown. */
+</style>
+</head>
+<body>
+<div id="stage"></div>
+<a id="backLink" href="../games/royal-gems.html">← SLOTKINGS</a>
+
+<div id="splash">
+  <div class="spinner"></div>
+  <div class="splash-t">ROYAL GEMS</div>
+</div>
+
+<div id="rotate" aria-hidden="true">
+  <div class="ph"></div>
+  <p>Rotate your device</p>
+  <span>Royal Gems Deluxe plays best in landscape</span>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/pixi.js@8/dist/pixi.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@esotericsoftware/spine-pixi-v8@4.2/dist/iife/spine-pixi-v8.min.js"></script>
+<script>
+  /* Load the local scripts with a fresh timestamp every visit. The browser kept
+     serving stale copies, which made edits look like they had not applied.
+     This loader itself never changes, so even a cached index.html still pulls
+     current code. `async = false` preserves execution order. */
+  (function () {
+    var v = Date.now();
+    ["js/diamond-data.js", "js/muzzle-data.js", "js/assets.js", "js/game.js"]
+      .forEach(function (src) {
+        var el = document.createElement("script");
+        el.src = src + "?v=" + v;
+        el.async = false;
+        document.head.appendChild(el);
+      });
+  })();
+</script>
+</body>
+</html>

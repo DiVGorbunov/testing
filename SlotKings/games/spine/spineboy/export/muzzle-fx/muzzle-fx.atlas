@@ -1,0 +1,19 @@
+muzzle-fx.png
+	size: 256, 256
+	filter: Linear, Linear
+	pma: true
+	scale: 0.5
+muzzle01
+	bounds: 72, 109, 67, 40
+muzzle02
+	bounds: 2, 109, 68, 42
+muzzle03
+	bounds: 29, 2, 83, 53
+muzzle04
+	bounds: 114, 2, 75, 45
+muzzle05
+	bounds: 141, 109, 68, 38
+muzzle-glow
+	bounds: 211, 109, 25, 25
+muzzle-ring
+	bounds: 2, 2, 25, 105
