@@ -40,6 +40,7 @@
         resultShort: 'final', minus: 'minus', plus: 'plus'
       },
       lang: { title: 'Language', subtitle: 'Choose your language' },
+      mock: { badge: 'Test data' },
       home: {
         headline: 'Predict the score.<br>Take the win.',
         intro: 'Gather your friends, pick a match and battle for the most accurate prediction.',
@@ -135,6 +136,7 @@
         resultShort: 'итог', minus: 'минус', plus: 'плюс'
       },
       lang: { title: 'Язык', subtitle: 'Выбери язык интерфейса' },
+      mock: { badge: 'Тестовые данные' },
       home: {
         headline: 'Угадай счёт.<br>Забери победу.',
         intro: 'Собери друзей, выберите матч и поборитесь за точный прогноз.',
@@ -364,6 +366,10 @@
       // экран загрузки (если ещё виден)
       const bootMsg = document.getElementById('boot-msg');
       if (bootMsg && !bootMsg.dataset.locked) bootMsg.textContent = this.t('boot.loading');
+
+      // индикатор тестового режима (создаётся в mock.js)
+      const mb = document.getElementById('mock-badge');
+      if (mb) mb.textContent = '🧪 ' + this.t('mock.badge');
     }
   });
 
